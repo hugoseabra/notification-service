@@ -4,6 +4,9 @@ from django.utils.translation import gettext_lazy as _
 
 from core.models.mixins import UUIDPkMixin, DateTimeManagementMixin, ActivableMixin, EntityModelMixin 
 
+from apps.audition import constants
+
+import jsonfield
 # Model Namespace.
 class Namespace(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
     class Meta:
@@ -214,6 +217,57 @@ class Device(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model)
         max_length=255,
         null=True,
         blank=True,
+    )
+
+    def __str__(self):
+        return self.name
+
+# Model Notification.
+class Notification(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
+    class Meta:
+        verbose_name = _('Notification')
+        verbose_name_plural = _('Notification')
+
+    title = models.CharField(
+        verbose_name=_('title'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    type = models.CharField(
+        verbose_name=_('type'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    status = models.CharField(
+        verbose_name=_('status'),
+        max_length=255,
+        choices=constants.STATUS_NOTIFICATION,
+        blank=False,
+        null=False
+    )
+
+    text = models.CharField(
+        verbose_name=_('text'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    device = models.ForeignKey(
+        Device,
+        models.DO_NOTHING,
+        db_column='device',
+        null=False,
+        blank=False,
+    )
+
+    extra_data = jsonfield.JSONField(
+        blank=True,
+        null=True
     )
 
     def __str__(self):
