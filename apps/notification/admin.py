@@ -28,7 +28,7 @@ class GroupAdmin(admin.ModelAdmin):
         'updated_at',
         'uuid',
         'name',
-        'user',
+        'alias',
         'namespace',
     )
     form = GroupForm
@@ -44,7 +44,7 @@ class SubscriberAdmin(admin.ModelAdmin):
         'updated_at',
         'uuid',
         'name',
-        'alias',
+        'user',
     )
     form=SubscriberForm
     list_filter = ('active', 'created_at', 'updated_at')

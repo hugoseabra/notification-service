@@ -48,8 +48,8 @@ class Group(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
         blank=False,
     )
 
-    user = models.CharField(
-        verbose_name=_('user'),
+    alias = models.CharField(
+        verbose_name=_('alias'),
         max_length=255,
         null=False,
         blank=False,
@@ -79,8 +79,8 @@ class Subscriber(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Mo
         blank=False,
     )
 
-    alias = models.CharField(
-        verbose_name=_('alias'),
+    user = models.CharField(
+        verbose_name=_('user'),
         max_length=255,
         null=False,
         blank=False,
