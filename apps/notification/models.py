@@ -34,3 +34,34 @@ class Namespace(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Mod
 
     def __str__(self):
         return self.name
+
+# Model Group.
+class Group(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
+    class Meta:
+        verbose_name = _('Group')
+        verbose_name_plural = _('Group')
+
+    name = models.CharField(
+        verbose_name=_('name'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    alias = models.CharField(
+        verbose_name=_('alias'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    namespace = models.ForeignKey(
+        Namespace,
+        models.DO_NOTHING,
+        db_column='namespace',
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return self.name
