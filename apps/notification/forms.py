@@ -17,3 +17,8 @@ class SubscriberForm(forms.ModelForm):
     class Meta:
         model = models.Subscriber
         fields = '__all__'
+
+class DeviceForm(forms.ModelForm):
+    class Meta:
+        model = models.Device
+        fields = '__all__'
