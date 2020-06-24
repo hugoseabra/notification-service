@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 
-from .serializers import NamespaceSerializer, GroupSerializer, SubscriberSerializer
+from .serializers import NamespaceSerializer, GroupSerializer, SubscriberSerializer, DeviceSerializer
 
 
 class NamespaceViewSet(ModelViewSet):
@@ -14,3 +14,7 @@ class GroupViewSet(ModelViewSet):
 class SubscriberViewSet(ModelViewSet):
     serializer_class = SubscriberSerializer
     queryset = SubscriberSerializer.Meta.model.objects.get_queryset()
+
+class DeviceViewSet(ModelViewSet):
+    serializer_class = DeviceSerializer
+    queryset = DeviceSerializer.Meta.model.objects.get_queryset()
