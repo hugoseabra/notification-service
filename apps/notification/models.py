@@ -90,3 +90,131 @@ class Subscriber(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Mo
     
     def __str__(self):
         return self.name
+
+# Model Device.
+class Device(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
+    class Meta:
+        verbose_name = _('Device')
+        verbose_name_plural = _('Device')
+
+    subscriber = models.ForeignKey(
+        Subscriber,
+        models.DO_NOTHING,
+        db_column='subscriber',
+        null=False,
+        blank=False,
+    )
+
+    name = models.CharField(
+        verbose_name=_('name'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    broker_type = models.CharField(
+        verbose_name=_('broker type'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    broker_id = models.IntegerField(
+        verbose_name=_('broker id'),
+        db_index=True,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    device_type = models.CharField(
+        verbose_name=_('device type'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    model = models.CharField(
+        verbose_name=_('model'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+    
+    unique_id = models.IntegerField(
+        verbose_name=_('unique id'),
+        db_index=True,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+    
+    brand = models.CharField(
+        verbose_name=_('brand'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    os_build_number = models.IntegerField(
+        verbose_name=_('os build number'),
+        db_index=True,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    os_version = models.IntegerField(
+        verbose_name=_('os version'),
+        db_index=True,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    os_bundle_id = models.IntegerField(
+        verbose_name=_('os bundle id'),
+        db_index=True,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    os_readable_version = models.IntegerField(
+        verbose_name=_('os readable version'),
+        db_index=True,
+        unique=True,
+        null=False,
+        blank=False,
+    )
+
+    android_fringerprint = models.CharField(
+        verbose_name=_('android fingerprint'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    android_install_time = models.CharField(
+        verbose_name=_('android install time'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    android_bootloader = models.CharField(
+        verbose_name=_('android bootloader'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    ios_device_token = models.CharField(
+        verbose_name=_('ios device token'),
+        max_length=255,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return self.name
