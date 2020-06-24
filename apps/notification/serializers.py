@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .forms import NamespaceForm, GroupForm, SubscriberForm, DeviceForm
+from .forms import NamespaceForm, GroupForm, SubscriberForm, DeviceForm, NotificationForm
 
 from core.serializers import FormSerializerMixin
 
@@ -27,4 +27,10 @@ class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = DeviceForm
         model = DeviceForm.Meta.model
+        fields =  '__all__'
+
+class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        form = NotificationForm
+        model = NotificationForm.Meta.model
         fields =  '__all__'
