@@ -48,14 +48,14 @@ class Group(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
         blank=False,
     )
 
-    alias = models.CharField(
-        verbose_name=_('alias'),
+    user = models.CharField(
+        verbose_name=_('user'),
         max_length=255,
         null=False,
         blank=False,
     )
 
-    namespace = models.ForeignKey(
+    groups = models.ForeignKey(
         Namespace,
         models.DO_NOTHING,
         db_column='namespace',
@@ -63,5 +63,30 @@ class Group(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        return self.name
+
+# Model Subscriber.
+class Subscriber(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
+    class Meta:
+        verbose_name = _('Subscriber')
+        verbose_name_plural = _('Subscriber')
+
+    name = models.CharField(
+        verbose_name=_('name'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    alias = models.CharField(
+        verbose_name=_('alias'),
+        max_length=255,
+        null=False,
+        blank=False,
+    )
+
+    groups = models.ManyToManyField(Group)
+    
     def __str__(self):
         return self.name
