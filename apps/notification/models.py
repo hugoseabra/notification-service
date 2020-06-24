@@ -7,6 +7,7 @@ from core.models.mixins import UUIDPkMixin, DateTimeManagementMixin, ActivableMi
 from apps.notification import constants
 
 import jsonfield
+
 # Model Namespace.
 class Namespace(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
     class Meta:
@@ -103,7 +104,7 @@ class Device(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model)
     subscriber = models.ForeignKey(
         Subscriber,
         models.DO_NOTHING,
-        db_column='subscriber',
+        db_column='user',
         null=False,
         blank=False,
     )
@@ -260,7 +261,7 @@ class Notification(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.
     device = models.ForeignKey(
         Device,
         models.DO_NOTHING,
-        db_column='device',
+        db_column='unique_id',
         null=False,
         blank=False,
     )
