@@ -55,7 +55,7 @@ class Group(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
         blank=False,
     )
 
-    groups = models.ForeignKey(
+    namespace = models.ForeignKey(
         Namespace,
         models.DO_NOTHING,
         db_column='namespace',

@@ -12,3 +12,8 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = models.Group
         fields = '__all__'
+
+class SubscriberForm(forms.ModelForm):
+    class Meta:
+        model = models.Subscriber
+        fields = '__all__'
