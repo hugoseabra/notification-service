@@ -22,3 +22,8 @@ class DeviceForm(forms.ModelForm):
     class Meta:
         model = models.Device
         fields = '__all__'
+
+class NotificationForm(forms.ModelForm):
+    class Meta:
+        model = models.Notification
+        fields = '__all__'
