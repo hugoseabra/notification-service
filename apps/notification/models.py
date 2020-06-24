@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from core.models.mixins import UUIDPkMixin, DateTimeManagementMixin, ActivableMixin, EntityModelMixin 
 
-# Namespace Model.
+
 class Namespace(UUIDPkMixin, ActivableMixin, DateTimeManagementMixin, models.Model):
     class Meta:
         verbose_name = _('Namespace')
