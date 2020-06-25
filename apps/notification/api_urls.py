@@ -5,6 +5,7 @@ from . import viewsets
 router = routers.DefaultRouter()
 
 router.register('namespaces', viewsets.NamespaceViewSet)
+router.register('subscribers', viewsets.SubscriberViewSet)
 
 namespace_router = routers.NestedSimpleRouter(
     parent_router=router,
