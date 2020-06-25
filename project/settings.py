@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # rest-framework
     'rest_framework',
+    'django_json_widget',
 
     # apps: notification
     'apps.notification',
