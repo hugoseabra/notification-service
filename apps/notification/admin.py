@@ -1,101 +1,103 @@
+# -*- coding: utf-8 -*-
+import jsonfield
 from django.contrib import admin
+from django_json_widget.widgets import JSONEditorWidget
 
-from .models import Namespace, Group, Subscriber, Device, Notification
+from . import forms
+from . import models
 
-from .forms import NamespaceForm, GroupForm, SubscriberForm, DeviceForm, NotificationForm
 
-@admin.register(Namespace)
+@admin.register(models.Namespace)
 class NamespaceAdmin(admin.ModelAdmin):
     list_display = (
-        'active',
-        'created_at',
-        'updated_at',
-        'uuid',
         'name',
+        'active',
         'external_id',
-        'description',
     )
-    form = NamespaceForm
     list_filter = ('active', 'created_at', 'updated_at')
-    search_fields = ('name',)
+    search_fields = ('name', 'external_id',)
     date_hierarchy = 'created_at'
+    form = forms.NamespaceForm
 
-@admin.register(Group)
+
+@admin.register(models.Group)
 class GroupAdmin(admin.ModelAdmin):
     list_display = (
-        'active',
-        'created_at',
-        'updated_at',
-        'uuid',
         'name',
         'alias',
         'namespace',
+        'active',
     )
-    form = GroupForm
     list_filter = ('active', 'created_at', 'updated_at', 'namespace')
     search_fields = ('name',)
     date_hierarchy = 'created_at'
+    form = forms.GroupForm
 
-@admin.register(Subscriber)
+
+@admin.register(models.Subscriber)
 class SubscriberAdmin(admin.ModelAdmin):
     list_display = (
-        'active',
-        'created_at',
-        'updated_at',
-        'uuid',
         'name',
         'user',
+        'active',
     )
-    form=SubscriberForm
-    list_filter = ('active', 'created_at', 'updated_at')
+    list_filter = ('active', 'created_at', 'updated_at', 'namespace')
     raw_id_fields = ('groups',)
-    search_fields = ('name',)
+    search_fields = ('name', 'user')
     date_hierarchy = 'created_at'
+    form = forms.SubscriberForm
 
 
-@admin.register(Device)
+@admin.register(models.Device)
 class DeviceAdmin(admin.ModelAdmin):
     list_display = (
+        'name',
+        'subscriber',
+        'model',
+        'active',
+    )
+    list_filter = (
         'active',
         'created_at',
         'updated_at',
-        'uuid',
         'subscriber',
-        'name',
-        'broker_type',
-        'broker_id',
-        'device_type',
-        'model',
-        'unique_id',
-        'brand',
-        'os_build_number',
-        'os_version',
-        'os_bundle_id',
-        'os_readable_version',
-        'android_fringerprint',
-        'android_install_time',
-        'android_bootloader',
-        'ios_device_token',
+        'subscriber__namespace',
     )
-    form = DeviceForm
-    list_filter = ('active', 'created_at', 'updated_at', 'subscriber')
     search_fields = ('name',)
     date_hierarchy = 'created_at'
+    form = forms.DeviceForm
 
-@admin.register(Notification)
+
+@admin.register(models.Notification)
 class NotificationAdmin(admin.ModelAdmin):
     list_display = (
-        'active',
-        'created_at',
-        'updated_at',
-        'uuid',
         'title',
         'type',
-        'status',
-        'text',
-        'device',
-        'extra_data',
+        'broker_type',
+        'subscriber',
+        'active',
     )
-    form = NotificationForm
-    list_filter = ('active', 'created_at', 'updated_at', 'device')
+    list_filter = ('active', 'created_at', 'updated_at', 'subscriber')
     date_hierarchy = 'created_at'
+    form = forms.NotificationForm
+    formfield_overrides = {
+        jsonfield.JSONField: {'widget': JSONEditorWidget},
+    }
+
+
+@admin.register(models.Transmission)
+class TransmissionAdmin(admin.ModelAdmin):
+    list_display = (
+        'device',
+        'notification',
+        'status',
+        'processed_at',
+    )
+    list_filter = (
+        'created_at',
+        'updated_at',
+        'device',
+        'processed_at',
+    )
+    date_hierarchy = 'created_at'
+    form = forms.TransmissionForm
