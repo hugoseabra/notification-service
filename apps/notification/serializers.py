@@ -8,14 +8,49 @@ class NamespaceSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = forms.NamespaceForm
         model = forms.NamespaceForm.Meta.model
-        fields = '__all__'
+        fields = (
+            'pk',
+            'name',
+            'active',
+            'external_id',
+            'description',
+            'created_at',
+            'updated_at',
+        )
 
 
 class GroupSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = forms.GroupForm
         model = forms.GroupForm.Meta.model
-        fields = '__all__'
+        fields = (
+            'pk',
+            'name',
+            'alias',
+            'active',
+            'created_at',
+            'updated_at',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.namespace_pk = None
+
+    def get_form(self, data=None, files=None, **kwargs):
+        if data:
+            data.update({'namespace': self.namespace_pk})
+        return super().get_form(data, files, **kwargs)
+
+    def to_representation(self, instance: forms.GroupForm.Meta.model):
+        rep = super().to_representation(instance)
+
+        if self.is_requested_field('namespace'):
+            namespace_serializer = NamespaceSerializer(
+                instance=instance.namespace
+            )
+            rep['namespace'] = namespace_serializer.data
+
+        return rep
 
 
 class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):

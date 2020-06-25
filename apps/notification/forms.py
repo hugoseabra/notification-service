@@ -12,7 +12,12 @@ class NamespaceForm(forms.ModelForm):
 class GroupForm(forms.ModelForm):
     class Meta:
         model = models.Group
-        fields = '__all__'
+        fields = (
+            'name',
+            'alias',
+            'active',
+            'namespace',
+        )
 
 
 class SubscriberForm(forms.ModelForm):
