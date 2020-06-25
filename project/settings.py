@@ -132,3 +132,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 FIXTURE_DIRS = [
     os.path.join(BASE_DIR, 'project', 'fixtures'),
 ]
+# ============================= DRF ========================================= #
+REST_FRAMEWORK = {
+    # if you want with milliseconds or
+    'DATETIME_FORMAT': '%s',
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50,
+}
