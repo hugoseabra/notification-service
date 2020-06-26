@@ -18,5 +18,18 @@ namespace_router.register(
     basename='namespace-groups'
 )
 
+subscriber_router = routers.NestedSimpleRouter(
+    parent_router=router,
+    parent_prefix='subscribers',
+    lookup='subscriber'
+)
+
+subscriber_router.register(
+    prefix='devices',
+    viewset=viewsets.DeviceViewSet,
+    basename='subscriber-devices'
+)
+
 urlpatterns = router.urls
 urlpatterns += namespace_router.urls
+urlpatterns += subscriber_router.urls
