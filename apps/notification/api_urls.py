@@ -30,6 +30,12 @@ subscriber_router.register(
     basename='subscriber-devices'
 )
 
+subscriber_router.register(
+    prefix='notifications',
+    viewset=viewsets.NotificationViewSet,
+    basename='subscriber-notifications'
+)
+
 urlpatterns = router.urls
 urlpatterns += namespace_router.urls
 urlpatterns += subscriber_router.urls

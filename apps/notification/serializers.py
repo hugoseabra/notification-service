@@ -101,4 +101,31 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = forms.NotificationForm
         model = forms.NotificationForm.Meta.model
-        fields = '__all__'
+        fields = (
+            'pk',
+            'type',
+            'text',
+            'active',
+            'created_at',
+            'updated_at',
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.subscriber_pk = None
+
+    def get_form(self, data=None, files=None, **kwargs):
+        if data:
+            data.update({'subscriber': self.subscriber_pk})
+        return super().get_form(data, files, **kwargs)
+
+    def to_representation(self, instance: forms.NotificationForm.Meta.model):
+        rep = super().to_representation(instance)
+
+        if self.is_requested_field('subscriber'):
+            subscriber_serializer = SubscriberSerializer(
+                instance=instance.subscriber
+            )
+            rep['subscriber'] = subscriber_serializer.data
+
+        return rep
