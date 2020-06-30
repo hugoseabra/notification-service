@@ -1,4 +1,4 @@
-from rest_framework import status
+from rest_framework import status, permissions
 from rest_framework.response import Response
 from rest_framework.serializers import ListSerializer
 from rest_framework.viewsets import ModelViewSet
@@ -16,10 +16,13 @@ class NamespaceViewSet(ModelViewSet):
     queryset = \
         serializers.NamespaceSerializer.Meta.model.objects.get_queryset()
 
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
 class GroupViewSet(FieldRequestViewsetMixin, ModelViewSet):
     serializer_class = serializers.GroupSerializer
     queryset = serializers.GroupSerializer.Meta.model.objects.get_queryset()
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_serializer(self, *args, **kwargs):
         serializer = super().get_serializer(*args, **kwargs)
@@ -66,6 +69,8 @@ class SubscriberViewSet(FieldRequestViewsetMixin, ModelViewSet):
     queryset = \
         serializers.SubscriberSerializer.Meta.model.objects.get_queryset()
 
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
 
@@ -93,6 +98,8 @@ class SubscriberViewSet(FieldRequestViewsetMixin, ModelViewSet):
 class DeviceViewSet(ModelViewSet):
     serializer_class = serializers.DeviceSerializer
     queryset = serializers.DeviceSerializer.Meta.model.objects.get_queryset()
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_serializer(self, *args, **kwargs):
         serializer = super().get_serializer(*args, **kwargs)
@@ -137,6 +144,8 @@ class NotificationViewSet(ModelViewSet):
     serializer_class = serializers.NotificationSerializer
     queryset = \
         serializers.NotificationSerializer.Meta.model.objects.get_queryset()
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def get_serializer(self, *args, **kwargs):
         serializer = super().get_serializer(*args, **kwargs)
