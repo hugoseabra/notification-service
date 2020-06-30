@@ -113,7 +113,7 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
         return rep
 
 
-class Transmission(FormSerializerMixin, serializers.ModelSerializer):
+class TransmissionSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = forms.TransmissionForm
         model = forms.TransmissionForm.Meta.model
