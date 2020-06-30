@@ -1,22 +1,12 @@
-from rest_framework import status, permissions
-
+from django.utils.translation import gettext_lazy as _
+from rest_framework import status, permissions, authentication
 from rest_framework.response import Response
-
 from rest_framework.serializers import ListSerializer
-
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from core.util.uuid import get_validated_uuid_from_string
-
 from core.viewsets import FieldRequestViewsetMixin
-
 from . import serializers
-
-from django.utils.translation import gettext_lazy as _
-
-from .models import Namespace
-
-
 
 
 class NamespaceViewSet(ModelViewSet):
@@ -24,13 +14,28 @@ class NamespaceViewSet(ModelViewSet):
     queryset = \
         serializers.NamespaceSerializer.Meta.model.objects.get_queryset()
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAdminUser,
+    )
+
 
 class GroupViewSet(FieldRequestViewsetMixin, ModelViewSet):
     serializer_class = serializers.GroupSerializer
     queryset = serializers.GroupSerializer.Meta.model.objects.get_queryset()
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
 
     def get_serializer(self, *args, **kwargs):
         serializer = super().get_serializer(*args, **kwargs)
@@ -77,7 +82,14 @@ class SubscriberViewSet(FieldRequestViewsetMixin, ModelViewSet):
     queryset = \
         serializers.SubscriberSerializer.Meta.model.objects.get_queryset()
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
@@ -102,18 +114,34 @@ class SubscriberViewSet(FieldRequestViewsetMixin, ModelViewSet):
 
         return Response(serializer.data)
 
+
 class DeviceViewSet(FieldRequestViewsetMixin, ModelViewSet):
     serializer_class = serializers.DeviceSerializer
     queryset = serializers.DeviceSerializer.Meta.model.objects.get_queryset()
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
 
 class NotificationViewSet(ModelViewSet):
     serializer_class = serializers.NotificationSerializer
     queryset = \
         serializers.NotificationSerializer.Meta.model.objects.get_queryset()
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
 
     def get_serializer(self, *args, **kwargs):
         serializer = super().get_serializer(*args, **kwargs)
@@ -145,7 +173,7 @@ class NotificationViewSet(ModelViewSet):
             self.kwargs.get('project_pk')
         )
         data = request.data.copy()
-        data.update({'subscriber': device_pk})
+        data.update({'subscriber': subscriber_pk})
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -154,12 +182,21 @@ class NotificationViewSet(ModelViewSet):
                         status=status.HTTP_201_CREATED,
                         headers=headers)
 
+
 class BaseTransmissionViewSet(ReadOnlyModelViewSet):
     serializer_class = serializers.TransmissionSerializer
     queryset = \
         serializers.TransmissionSerializer.Meta.model.objects.get_queryset()
 
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication,
+    )
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
 
 class DeviceTransmissionViewSet(BaseTransmissionViewSet):
 
@@ -177,8 +214,9 @@ class DeviceTransmissionViewSet(BaseTransmissionViewSet):
 
         return queryset
 
+
 class SubscriberTransmissionViewSet(BaseTransmissionViewSet):
-    
+
     def get_queryset(self):
         queryset = super().get_queryset()
 

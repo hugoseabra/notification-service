@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # rest-framework
     'rest_framework',
+    'rest_framework.authtoken',
     'django_json_widget',
 
     # apps: notification
@@ -140,11 +141,6 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 50,
 
-    # Authentication Method.
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
-    
     # Authentication Method.
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
