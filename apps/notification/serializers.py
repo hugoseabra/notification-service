@@ -65,6 +65,7 @@ class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'updated_at',
         )
 
+
 class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = forms.DeviceForm
@@ -76,6 +77,7 @@ class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'created_at',
             'updated_at',
         )
+
 
 class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
@@ -109,3 +111,18 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
             rep['subscriber'] = subscriber_serializer.data
 
         return rep
+
+
+class Transmission(FormSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        form = forms.TransmissionForm
+        model = forms.TransmissionForm.Meta.model
+        fields = (
+            'pk',
+            'device',
+            'notification',
+            'status',
+            'processed_at',
+            'created_at',
+            'updated_at',
+        )
