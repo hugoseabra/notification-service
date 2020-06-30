@@ -151,3 +151,10 @@ class NotificationViewSet(ModelViewSet):
         return Response(serializer.data,
                         status=status.HTTP_201_CREATED,
                         headers=headers)
+
+class TransmissionViewSet(ModelViewSet):
+    serializer_class = serializers.TransmissionSerializer
+    queryset = \
+        serializers.TransmissionSerializer.Meta.model.objects.get_queryset()
+
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
