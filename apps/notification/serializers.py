@@ -53,7 +53,7 @@ class GroupSerializer(FormSerializerMixin, serializers.ModelSerializer):
         return rep
 
 
-class SubscriberSerializer(serializers.ModelSerializer):
+class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
         form = forms.SubscriberForm
         model = forms.SubscriberForm.Meta.model
@@ -64,6 +64,18 @@ class SubscriberSerializer(serializers.ModelSerializer):
             'created_at',
             'updated_at',
         )
+
+    def to_representation(self, instance: forms.GroupForm.Meta.model):
+        rep = super().to_representation(instance)
+
+        if self.is_requested_field('namespace'):
+            namespace_serializer = NamespaceSerializer(
+                instance=instance.namespace
+            )
+            rep['namespace'] = namespace_serializer.data
+
+        return rep
+
 
 class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
@@ -96,6 +108,7 @@ class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
             rep['subscriber'] = subscriber_serializer.data
 
         return rep
+
 
 class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
