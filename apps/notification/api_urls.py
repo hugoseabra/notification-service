@@ -6,7 +6,9 @@ router = routers.DefaultRouter()
 
 router.register('namespaces', viewsets.NamespaceViewSet)
 router.register('subscribers', viewsets.SubscriberViewSet)
+router.register('devices', viewsets.DeviceViewSet)
 
+# Namespace.
 namespace_router = routers.NestedSimpleRouter(
     parent_router=router,
     parent_prefix='namespaces',
@@ -18,6 +20,7 @@ namespace_router.register(
     basename='namespace-groups'
 )
 
+# Subscriber.
 subscriber_router = routers.NestedSimpleRouter(
     parent_router=router,
     parent_prefix='subscribers',
@@ -36,6 +39,32 @@ subscriber_router.register(
     basename='subscriber-notifications'
 )
 
+subscriber_router.register(
+    prefix='transmissions',
+    viewset=viewsets.SubscriberTransmissionViewSet,
+    basename='subscriber-transmissions'
+)
+
+# Device.
+device_router = routers.NestedSimpleRouter(
+    parent_router=router,
+    parent_prefix='devices',
+    lookup='device'
+)
+
+device_router.register(
+    prefix='subscribers',
+    viewset=viewsets.SubscriberViewSet,
+    basename='device-subscribers'
+)
+
+device_router.register(
+    prefix='transmissions',
+    viewset=viewsets.DeviceTransmissionViewSet,
+    basename='device-transmissions'
+)
+
 urlpatterns = router.urls
 urlpatterns += namespace_router.urls
 urlpatterns += subscriber_router.urls
+urlpatterns += device_router.urls
