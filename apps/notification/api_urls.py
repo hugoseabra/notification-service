@@ -39,16 +39,29 @@ subscriber_router.register(
     basename='subscriber-notifications'
 )
 
+subscriber_router.register(
+    prefix='transmissions',
+    viewset=viewsets.TransmissionViewSet,
+    basename='subscriber-transmissions'
+)
+
 # Device.
 device_router = routers.NestedSimpleRouter(
     parent_router=router,
     parent_prefix='devices',
     lookup='device'
 )
+
 device_router.register(
     prefix='subscribers',
     viewset=viewsets.SubscriberViewSet,
     basename='device-subscribers'
+)
+
+device_router.register(
+    prefix='transmissions',
+    viewset=viewsets.TransmissionViewSet,
+    basename='device-transmissions'
 )
 
 urlpatterns = router.urls
