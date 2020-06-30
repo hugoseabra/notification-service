@@ -158,3 +158,28 @@ class TransmissionViewSet(ModelViewSet):
         serializers.TransmissionSerializer.Meta.model.objects.get_queryset()
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def get_serializer(self, *args, **kwargs):
+        serializer = super().get_serializer(*args, **kwargs)
+
+        if isinstance(serializer, ListSerializer) is False:
+            device_pk = get_validated_uuid_from_string(
+                self.kwargs.get('device_pk')
+            )
+            serializer.device_pk = device_pk
+
+        return serializer
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        device_pk = get_validated_uuid_from_string(
+            self.kwargs.get('device_pk')
+        )
+
+        if device_pk:
+            queryset = queryset.filter(device_id=device_pk)
+        else:
+            queryset = queryset.none()
+
+        return queryset
