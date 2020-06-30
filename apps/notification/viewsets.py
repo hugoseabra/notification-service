@@ -4,7 +4,7 @@ from rest_framework.response import Response
 
 from rest_framework.serializers import ListSerializer
 
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from core.util.uuid import get_validated_uuid_from_string
 
@@ -15,6 +15,8 @@ from . import serializers
 from django.utils.translation import gettext_lazy as _
 
 from .models import Namespace
+
+
 
 
 class NamespaceViewSet(ModelViewSet):
@@ -152,23 +154,14 @@ class NotificationViewSet(ModelViewSet):
                         status=status.HTTP_201_CREATED,
                         headers=headers)
 
-class TransmissionViewSet(ModelViewSet):
+class BaseTransmissionViewSet(ReadOnlyModelViewSet):
     serializer_class = serializers.TransmissionSerializer
     queryset = \
         serializers.TransmissionSerializer.Meta.model.objects.get_queryset()
 
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
-    def get_serializer(self, *args, **kwargs):
-        serializer = super().get_serializer(*args, **kwargs)
-
-        if isinstance(serializer, ListSerializer) is False:
-            device_pk = get_validated_uuid_from_string(
-                self.kwargs.get('device_pk')
-            )
-            serializer.device_pk = device_pk
-
-        return serializer
+class DeviceTransmissionViewSet(BaseTransmissionViewSet):
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -179,6 +172,22 @@ class TransmissionViewSet(ModelViewSet):
 
         if device_pk:
             queryset = queryset.filter(device_id=device_pk)
+        else:
+            queryset = queryset.none()
+
+        return queryset
+
+class SubscriberTransmissionViewSet(BaseTransmissionViewSet):
+    
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        subscriber_pk = get_validated_uuid_from_string(
+            self.kwargs.get('subscriber_pk')
+        )
+
+        if subscriber_pk:
+            queryset = queryset.filter(device__subscriber_id=subscriber_pk)
         else:
             queryset = queryset.none()
 

@@ -41,7 +41,7 @@ subscriber_router.register(
 
 subscriber_router.register(
     prefix='transmissions',
-    viewset=viewsets.TransmissionViewSet,
+    viewset=viewsets.SubscriberTransmissionViewSet,
     basename='subscriber-transmissions'
 )
 
@@ -60,7 +60,7 @@ device_router.register(
 
 device_router.register(
     prefix='transmissions',
-    viewset=viewsets.TransmissionViewSet,
+    viewset=viewsets.DeviceTransmissionViewSet,
     basename='device-transmissions'
 )
 
