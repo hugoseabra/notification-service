@@ -13,9 +13,11 @@ class NamespaceAdmin(admin.ModelAdmin):
         'name',
         'active',
         'external_id',
+        'broker_type',
+        'broker_app_id',
     )
-    list_filter = ('active', 'created_at', 'updated_at')
-    search_fields = ('name', 'external_id',)
+    list_filter = ('active', 'created_at', 'updated_at', 'broker_type')
+    search_fields = ('name', 'external_id', 'broker_app_id')
     date_hierarchy = 'created_at'
     form = forms.NamespaceForm
 
@@ -73,7 +75,6 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'type',
-        'broker_type',
         'subscriber',
         'active',
     )
