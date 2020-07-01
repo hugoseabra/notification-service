@@ -1,7 +1,9 @@
 from rest_framework import serializers
 
 from core.serializers import FormSerializerMixin
+from core.util.uuid import get_validated_uuid_from_string
 from . import forms
+from .models import Group
 
 
 class NamespaceSerializer(FormSerializerMixin, serializers.ModelSerializer):
@@ -61,9 +63,46 @@ class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'pk',
             'name',
             'active',
+            'user',
+            'namespace',
             'created_at',
             'updated_at',
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.groups = list()
+
+    def to_internal_value(self, data: dict):
+        if 'groups' in data and isinstance(data['groups'], list):
+            for group in data['groups']:
+                pk = None
+
+                if isinstance(group, dict):
+                    pk = group.get('pk', None)
+                elif isinstance(group, str):
+                    pk = group
+
+                pk = get_validated_uuid_from_string(pk)
+                if not pk:
+                    continue
+
+                try:
+                    self.groups.append(Group.objects.get(pk=pk))
+                except Group.DoesNotExist:
+                    pass
+
+        data = super().to_internal_value(data)
+
+        return data
+
+    def get_form(self, data=None, files=None, **kwargs):
+        form = super().get_form(data, files, **kwargs)
+
+        for group in self.groups:
+            form.add_group(group)
+
+        return form
 
     def to_representation(self, instance: forms.GroupForm.Meta.model):
         rep = super().to_representation(instance)
@@ -73,6 +112,12 @@ class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):
                 instance=instance.namespace
             )
             rep['namespace'] = namespace_serializer.data
+
+        if self.is_requested_field('groups') is True:
+            rep['groups'] = list()
+            for group in instance.groups.all():
+                group_serializer = GroupSerializer(instance=group)
+                rep['groups'].append(group_serializer.data)
 
         return rep
 
