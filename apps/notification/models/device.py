@@ -33,7 +33,6 @@ class Device(mixins.UUIDPkMixin,
     broker_id = models.TextField(
         verbose_name=_('broker id'),
         db_index=True,
-        unique=True,
         null=False,
         blank=False,
     )

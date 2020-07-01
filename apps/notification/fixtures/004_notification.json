@@ -1,1 +1,70 @@
-[{"model": "notification.notification", "pk": "5f5d16ca-2bfb-4975-b759-c6368e3b34c9", "fields": {"active": true, "created_at": "2020-06-25T16:35:41.307Z", "updated_at": "2020-06-25T16:35:41.307Z", "title": "Imperd\u00edvel", "type": "marketing_notification", "broker_type": "onesignal", "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!", "subscriber": "31e5da0a-85dd-4e04-8033-1333cfd0aa8d", "extra_data": null}}, {"model": "notification.notification", "pk": "7a9fa282-d157-4473-90b5-ea3a2b6df87a", "fields": {"active": true, "created_at": "2020-06-25T16:37:42.241Z", "updated_at": "2020-06-25T16:38:11.014Z", "title": "Imperd\u00edvel", "type": "marketing_engagement", "broker_type": "onesignal", "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!", "subscriber": "ba958913-eb21-41cb-a9c0-f4a17c651013", "extra_data": null}}, {"model": "notification.notification", "pk": "aff3c52a-5fa1-4d74-8745-869998940750", "fields": {"active": true, "created_at": "2020-06-25T16:35:09.525Z", "updated_at": "2020-06-25T16:35:09.525Z", "title": "Fritadeira Wallita", "type": "product_engagement", "broker_type": "onesignal", "text": "Ainda d\u00e1 para voc\u00ea aproveitar os pre\u00e7os baixos da semana.", "subscriber": "31e5da0a-85dd-4e04-8033-1333cfd0aa8d", "extra_data": "{\n    \"product_id\": \"f179c2c7-5cf7-4053-9776-27f902694196\"\n}"}}, {"model": "notification.notification", "pk": "b392b065-796a-4eef-b420-fad91094ddfe", "fields": {"active": true, "created_at": "2020-06-25T16:37:54.319Z", "updated_at": "2020-06-25T16:37:54.319Z", "title": "Fritadeira Wallita", "type": "product_engagement", "broker_type": "onesignal", "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!", "subscriber": "ba958913-eb21-41cb-a9c0-f4a17c651013", "extra_data": null}}]
+[
+  {
+    "model": "notification.notification",
+    "pk": "5f5d16ca-2bfb-4975-b759-c6368e3b34c9",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T16:35:41.307Z",
+      "updated_at": "2020-07-01T18:29:12.698Z",
+      "language": "pt",
+      "title": "Imperd\u00edvel",
+      "url": "https://www.gravatar.com/avatar/48942131478c36610a71509144980e1f",
+      "type": "marketing_notification",
+      "broker_id": "",
+      "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
+      "subscriber": "31e5da0a-85dd-4e04-8033-1333cfd0aa8d",
+      "extra_data": null
+    }
+  },
+  {
+    "model": "notification.notification",
+    "pk": "7a9fa282-d157-4473-90b5-ea3a2b6df87a",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T16:37:42.241Z",
+      "updated_at": "2020-07-01T18:29:07.833Z",
+      "language": "pt",
+      "title": "Imperd\u00edvel",
+      "url": "https://www.gravatar.com/avatar/48942131478c36610a71509144980e1f",
+      "type": "marketing_engagement",
+      "broker_id": "",
+      "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
+      "subscriber": "ba958913-eb21-41cb-a9c0-f4a17c651013",
+      "extra_data": null
+    }
+  },
+  {
+    "model": "notification.notification",
+    "pk": "aff3c52a-5fa1-4d74-8745-869998940750",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T16:35:09.525Z",
+      "updated_at": "2020-07-01T18:29:16.799Z",
+      "language": "pt",
+      "title": "Fritadeira Wallita",
+      "url": "https://www.gravatar.com/avatar/48942131478c36610a71509144980e1f",
+      "type": "product_engagement",
+      "broker_id": "",
+      "text": "Ainda d\u00e1 para voc\u00ea aproveitar os pre\u00e7os baixos da semana.",
+      "subscriber": "31e5da0a-85dd-4e04-8033-1333cfd0aa8d",
+      "extra_data": "{\n    \"product_id\": \"f179c2c7-5cf7-4053-9776-27f902694196\"\n}"
+    }
+  },
+  {
+    "model": "notification.notification",
+    "pk": "b392b065-796a-4eef-b420-fad91094ddfe",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T16:37:54.319Z",
+      "updated_at": "2020-07-01T18:29:32.832Z",
+      "language": "pt",
+      "title": "Fritadeira Wallita",
+      "url": "https://www.gravatar.com/avatar/48942131478c36610a71509144980e1f",
+      "type": "product_engagement",
+      "broker_id": "",
+      "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
+      "subscriber": "ba958913-eb21-41cb-a9c0-f4a17c651013",
+      "extra_data": null
+    }
+  }
+]

@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from apps.notification import constants
 from core.models import mixins
 
 
@@ -36,6 +37,22 @@ class Namespace(mixins.UUIDPkMixin,
         max_length=255,
         null=True,
         blank=True,
+    )
+
+    broker_type = models.CharField(
+        verbose_name=_('broker type'),
+        choices=constants.BROTKER_TYPES,
+        default=constants.BROKER_TYPE_ONESIGNAL,
+        max_length=10,
+        null=False,
+        blank=False,
+    )
+
+    broker_app_id = models.TextField(
+        verbose_name=_('APP ID (broker)'),
+        db_index=True,
+        null=False,
+        blank=False,
     )
 
     def __str__(self):
