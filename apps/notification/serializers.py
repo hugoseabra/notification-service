@@ -15,6 +15,8 @@ class NamespaceSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'name',
             'active',
             'external_id',
+            'broker_type',
+            'broker_app_id',
             'description',
             'created_at',
             'updated_at',
@@ -144,6 +146,7 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'type',
             'text',
             'active',
+            'broker_id',
             'created_at',
             'updated_at',
         )
