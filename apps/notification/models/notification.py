@@ -18,11 +18,27 @@ class Notification(mixins.UUIDPkMixin,
         verbose_name = _('Notification')
         verbose_name_plural = _('Notifications')
 
+    language = models.CharField(
+        verbose_name=_('language'),
+        choices=constants.NOTIFICATION_LANGUAGES,
+        default=constants.NOTIFICATION_LANG_PT,
+        max_length=3,
+        null=False,
+        blank=False
+    )
+
     title = models.CharField(
         verbose_name=_('title'),
         max_length=255,
         null=False,
         blank=False,
+    )
+
+    url = models.CharField(
+        verbose_name=_('url'),
+        max_length=255,
+        null=True,
+        blank=True,
     )
 
     type = models.CharField(
@@ -32,13 +48,11 @@ class Notification(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    broker_type = models.CharField(
-        verbose_name=_('broker type'),
-        choices=constants.BROTKER_TYPES,
-        default=constants.BROKER_TYPE_ONESIGNAL,
-        max_length=10,
-        null=False,
-        blank=False,
+    broker_id = models.TextField(
+        verbose_name=_('broker id'),
+        db_index=True,
+        null=True,
+        blank=True,
     )
 
     text = models.CharField(
