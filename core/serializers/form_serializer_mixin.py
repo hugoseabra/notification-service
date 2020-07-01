@@ -114,5 +114,6 @@ class FormSerializerMixin(FieldsSerializerMixin):
 
     def save(self, **_):
         assert self.form_instance is not None
-        self.instance = self.form_instance.save(True)
+        self.form_instance.save(True)
+        self.instance = self.form_instance.instance
         return self.instance
