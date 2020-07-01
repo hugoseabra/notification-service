@@ -8,7 +8,11 @@ from core.models import mixins
 class Subscriber(mixins.UUIDPkMixin,
                  mixins.ActivableMixin,
                  mixins.DateTimeManagementMixin,
+                 mixins.EntityMixin,
+                 mixins.DomainRuleMixin,
+                 mixins.DeletableModelMixin,
                  models.Model):
+
     class Meta:
         verbose_name = _('Subscriber')
         verbose_name_plural = _('Subscribers')

@@ -8,11 +8,15 @@ from core.models import mixins
 class Group(mixins.UUIDPkMixin,
             mixins.ActivableMixin,
             mixins.DateTimeManagementMixin,
+            mixins.EntityMixin,
+            mixins.DomainRuleMixin,
+            mixins.DeletableModelMixin,
             models.Model):
 
     class Meta:
         verbose_name = _('Group')
         verbose_name_plural = _('Groups')
+        unique_together = (('namespace_id', 'alias',),)
 
     name = models.CharField(
         verbose_name=_('name'),

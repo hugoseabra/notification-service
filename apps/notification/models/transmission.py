@@ -4,11 +4,20 @@ from django.utils.translation import gettext_lazy as _
 from apps.notification import constants
 from core.models import mixins
 
+from .rules import transmission_rules as rules
 
 # Model Notification.
 class Transmission(mixins.UUIDPkMixin,
                    mixins.DateTimeManagementMixin,
+                   mixins.EntityMixin,
+                   mixins.DomainRuleMixin,
+                   mixins.DeletableModelMixin,
                    models.Model):
+
+    integrity_rules = (
+        rules.DeviceAndNotificationSameSubscriberRule,
+    )
+
     class Meta:
         verbose_name = _('Tranmission')
         verbose_name_plural = _('Transmissions')

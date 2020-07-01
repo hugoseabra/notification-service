@@ -10,6 +10,9 @@ from core.models import mixins
 class Notification(mixins.UUIDPkMixin,
                    mixins.ActivableMixin,
                    mixins.DateTimeManagementMixin,
+                   mixins.EntityMixin,
+                   mixins.DomainRuleMixin,
+                   mixins.DeletableModelMixin,
                    models.Model):
     class Meta:
         verbose_name = _('Notification')
