@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_json_widget',
+    'django_celery_beat',
 
     # apps: notification
     'apps.notification',
@@ -146,3 +147,16 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
 }
+
+# =============================== CELERY ==================================== #
+# CELERY
+CELERY_BROKER_URL = 'amqp://{user}:{password}@{server}:5672/'.format(
+    user=config('CELERY_USER', default='admin', cast=str),
+    password=config('CELERY_USER', default='admin', cast=str),
+    server=config('CELERY_USER', default='localhost', cast=str),
+)
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_TIMEZONE = TIME_ZONE
