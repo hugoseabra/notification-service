@@ -35,7 +35,11 @@ def create_transmissions(notification: Notification):
     """
     Creates transmissions for every Subscriber's active device.
     """
-    pass
+    for device in notification.subscriber.devices.filter(active=True):
+        filters = {
+            'notification_id': str(notification.pk),
+            'device_id': str(device.pk),
+        }
 
 
 def send_notification(transmission: Transmission):
