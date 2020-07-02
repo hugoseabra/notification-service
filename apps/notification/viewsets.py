@@ -166,45 +166,6 @@ class NotificationViewSet(ModelViewSet):
         permissions.IsAuthenticated,
     )
 
-    def get_serializer(self, *args, **kwargs):
-        serializer = super().get_serializer(*args, **kwargs)
-
-        if isinstance(serializer, ListSerializer) is False:
-            subscriber_pk = get_validated_uuid_from_string(
-                self.kwargs.get('subscriber_pk')
-            )
-            serializer.subscriber_pk = subscriber_pk
-
-        return serializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-
-        subscriber_pk = get_validated_uuid_from_string(
-            self.kwargs.get('subscriber_pk')
-        )
-
-        if subscriber_pk:
-            queryset = queryset.filter(subscriber_id=subscriber_pk)
-        else:
-            queryset = queryset.none()
-
-        return queryset
-
-    def create(self, request, *args, **kwargs):
-        subscriber_pk = get_validated_uuid_from_string(
-            self.kwargs.get('project_pk')
-        )
-        data = request.data.copy()
-        data.update({'subscriber': subscriber_pk})
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(data)
-        return Response(serializer.data,
-                        status=status.HTTP_201_CREATED,
-                        headers=headers)
-
 
 class BaseTransmissionViewSet(ReadOnlyModelViewSet):
     serializer_class = serializers.TransmissionSerializer
