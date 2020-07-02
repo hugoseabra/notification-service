@@ -180,6 +180,11 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'type',
             'text',
             'active',
+            'language',
+            'title',
+            'url',
+            'subscriber',
+            'extra_data',
             'broker_id',
             'created_at',
             'updated_at',
@@ -187,11 +192,11 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.subscriber_pk = None
+        self.subscribe_pk = None
 
     def get_form(self, data=None, files=None, **kwargs):
         if data:
-            data.update({'subscriber': self.subscriber_pk})
+            data.update({'subscribe': self.subscribe_pk})
         return super().get_form(data, files, **kwargs)
 
     def to_representation(self, instance: forms.NotificationForm.Meta.model):
