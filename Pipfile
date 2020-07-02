@@ -20,6 +20,8 @@ jsonfield2 = "*"
 django-json-widget = "*"
 lxml = "*"
 onesignal-sdk = "*"
+celery = "*"
+django-celery-beat = "*"
 
 [requires]
 python_version = "3.8"
