@@ -1,4 +1,4 @@
-from ..languages import LANGUAGES
+from brokers.onesignal.languages import LANGUAGES
 
 
 class Notification:
