@@ -1,0 +1,40 @@
+version: '3.5'
+
+networks:
+  api_proxy_net:
+    external: true
+
+services:
+  app:
+    image:
+    restart: unless-stopped
+    hostname: HOSTNAME-mailchimp-app
+    env_file: .env
+    ports:
+      - "8000"
+    networks:
+      - api_proxy_net
+    entrypoint:
+      - /app_conf/services/app/container-entry.sh
+    volumes:
+      - ./shared-volume/media:/code/media
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.service_service.rule=Host(`api.congressy.com`)"
+      - "traefik.http.middlewares.mailchimp_service.stripprefix.prefixes=/v1/notification"
+      - "traefik.http.routers.notification_service.entrypoints=web"
+      - "traefik.protocol=http"
+      - "traefik.docker.network=api_proxy_net"
+
+  celery:
+    image:
+    restart: unless-stopped
+    hostname: HOSTNAME-mailchimp-celery
+    env_file: .env
+    networks:
+      - api_proxy_net
+    entrypoint:
+      - /app_conf/services/celery/container-entry.sh
+    volumes:
+      - ./shared-volume/media:/code/media
+      - ./celery-logs:/tmp/celery-logs
