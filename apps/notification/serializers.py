@@ -159,6 +159,17 @@ class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
             data.update({'subscribe': self.subscribe_pk})
         return super().get_form(data, files, **kwargs)
 
+    def to_representation(self, instance: forms.DeviceForm.Meta.model):
+        rep = super().to_representation(instance)
+
+        if self.is_requested_field('subscriber'):
+            subscriber_serializer = SubscriberSerializer(
+                instance=instance.subscriber
+            )
+            rep['subscriber'] = subscriber_serializer.data
+
+        return rep
+
 
 class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
     class Meta:
