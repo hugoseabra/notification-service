@@ -15,7 +15,7 @@ class Transmission(mixins.UUIDPkMixin,
                    models.Model):
 
     integrity_rules = (
-        rules.DeviceAndNotificationSameSubscriberRule,
+        rules.DeviceAndNotificationSameNamespaceRule,
     )
 
     class Meta:

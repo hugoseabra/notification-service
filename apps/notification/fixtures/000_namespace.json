@@ -1,21 +1,6 @@
 [
   {
     "model": "notification.namespace",
-    "pk": "34410808-802f-4750-a7ec-7a691a36801e",
-    "fields": {
-      "active": true,
-      "created_at": "2020-06-30T23:29:29.715Z",
-      "updated_at": "2020-06-30T23:29:29.716Z",
-      "name": "SELpfuSdfgjxvWKIsVULxponQZYavNfSjuGqdzVvMZUqzWjkwdVmfTZrSTJWNGmYmHcxcxVggraXABHbSUfAjUoMrxeJIseNvuDPxjFqkTpyNQxwTscqpcxUPWixMmwtnAEYkkrLRlBezWjVLqWVCRxQHMVXGNcpuJmvFbOHoeQVmupwWFcFCPvVfhKxUTiPALPZoQxzhJZMpRewlwlUSBhWVEqPAszuHfbHXHQTzikyjrBwHpertTHAnVjFEcN",
-      "external_id": null,
-      "broker_type": "onesignal",
-      "broker_app_id": "aaa",
-      "broker_api_key": "aaa",
-      "description": null
-    }
-  },
-  {
-    "model": "notification.namespace",
     "pk": "735cc98b-7a30-4563-90fa-6dc6101e373a",
     "fields": {
       "active": true,
@@ -26,21 +11,6 @@
       "broker_app_id": "aaa",
       "broker_api_key": "aaa",
       "description": "Test namespace"
-    }
-  },
-  {
-    "model": "notification.namespace",
-    "pk": "d729bd0f-3347-45a2-9ac8-7c83362a7699",
-    "fields": {
-      "active": true,
-      "created_at": "2020-06-30T23:29:34.885Z",
-      "updated_at": "2020-06-30T23:29:34.885Z",
-      "name": "aScmyfJVJONFCNdzYRumEAWvpdmrJAgznexWHQkXzNDBfWrbQxYiwhVsJIwDhpuODXVdnpuanWBbLEUNzUfqLKzDsCamJyptVMGaJzRkXyHoUByowVSsedvzzGRXzprbIfUHOBNlchDRZiNJxhOXEaiKzYNDspdmKwrTVhKOBMACQCHrKqvEbthjpesGKUAxqkMSEMRekxEgzhKqrWDMLZOTVcePoequskDRqJFjaXyydZPNqqWhxwOkfWSIFnF",
-      "external_id": null,
-      "broker_type": "onesignal",
-      "broker_app_id": "aaa",
-      "broker_api_key": "aaa",
-      "description": null
     }
   },
   {

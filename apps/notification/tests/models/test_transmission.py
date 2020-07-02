@@ -4,7 +4,7 @@ from django.test import TestCase
 from apps.notification.tests import utils
 
 
-class DeviceAndNotificationSameSubscriberTest(TestCase):
+class DeviceAndNotificationSameNamespaceTest(TestCase):
     """
     Tests of main relations of a transmission (device and notification)
     checking them if they reference the same Subscriber.
@@ -13,10 +13,10 @@ class DeviceAndNotificationSameSubscriberTest(TestCase):
     def setUp(self):
         self.instance = utils.create_transmission(save=False)
 
-    def test_error_device_notification_diff_subscriber(self):
+    def test_error_device_notification_diff_namespace(self):
         """
         Test adding a device and a notification into a Tranmission with
-        different Subscriber related.
+        different Namespaces related.
         """
         notification = utils.create_notification(save=True,
                                                  ignore_validation=True)
@@ -31,13 +31,13 @@ class DeviceAndNotificationSameSubscriberTest(TestCase):
     def test_ok_device_notification_same_subscriber(self):
         """
         Test adding a device and a notification into a Tranmission with
-        same Subscriber related.
+        same Namespace related.
         """
-        notification = utils.create_notification(save=True,
-                                                 ignore_validation=True)
-        device = utils.create_device(save=False)
-        device.subscriber = notification.subscriber
-        device.save(ignore_validation=True)
+        device = utils.create_device(save=True, ignore_validation=True)
+
+        notification = utils.create_notification(save=False)
+        notification.namespace = device.subscriber.namespace
+        notification.save(ignore_validation=True)
 
         self.instance.device = device
         self.instance.notification = notification

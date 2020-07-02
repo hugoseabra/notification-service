@@ -18,6 +18,14 @@ class Notification(mixins.UUIDPkMixin,
         verbose_name = _('Notification')
         verbose_name_plural = _('Notifications')
 
+    namespace = models.ForeignKey(
+        to='notification.Namespace',
+        on_delete=models.CASCADE,
+        related_name='notifications',
+        null=False,
+        blank=False,
+    )
+
     language = models.CharField(
         verbose_name=_('language'),
         choices=constants.NOTIFICATION_LANGUAGES,
@@ -62,18 +70,10 @@ class Notification(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    subscriber = models.ForeignKey(
-        to='notification.Subscriber',
-        on_delete=models.CASCADE,
-        related_name='notifications',
-        null=False,
-        blank=False,
-    )
-
     extra_data = jsonfield.JSONField(
         blank=True,
         null=True
     )
 
     def __str__(self):
-        return f'{self.subscriber} - {self.title}'
+        return f'{self.namespace} - {self.title}'

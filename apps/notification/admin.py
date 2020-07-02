@@ -75,10 +75,10 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'type',
-        'subscriber',
+        'namespace',
         'active',
     )
-    list_filter = ('active', 'created_at', 'updated_at', 'subscriber')
+    list_filter = ('active', 'created_at', 'updated_at', 'namespace')
     date_hierarchy = 'created_at'
     form = forms.NotificationForm
     formfield_overrides = {

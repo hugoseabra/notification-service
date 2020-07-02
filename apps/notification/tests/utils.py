@@ -58,8 +58,8 @@ def create_notification(save=False, ignore_validation=False):
     """
     instance = mommy.prepare('notification.Notification')
 
-    subscriber = create_subscriber(save=True, ignore_validation=True)
-    instance.subscriber = subscriber
+    namespace = create_namespace(save=True, ignore_validation=True)
+    instance.namespace = namespace
 
     if save is True:
         if ignore_validation is False:
