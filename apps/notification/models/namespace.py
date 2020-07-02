@@ -55,5 +55,12 @@ class Namespace(mixins.UUIDPkMixin,
         blank=False,
     )
 
+    broker_api_key = models.TextField(
+        verbose_name=_('API KEY'),
+        db_index=True,
+        null=False,
+        blank=False,
+    )
+
     def __str__(self):
         return self.name

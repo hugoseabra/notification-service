@@ -10,6 +10,7 @@
       "external_id": null,
       "broker_type": "onesignal",
       "broker_app_id": "aaa",
+      "broker_api_key": "aaa",
       "description": null
     }
   },
@@ -22,6 +23,8 @@
       "updated_at": "2020-06-25T16:12:43.134Z",
       "name": "Aplica\u00e7\u00e3o cliente 1",
       "external_id": 1,
+      "broker_app_id": "aaa",
+      "broker_api_key": "aaa",
       "description": "Test namespace"
     }
   },
@@ -36,6 +39,7 @@
       "external_id": null,
       "broker_type": "onesignal",
       "broker_app_id": "aaa",
+      "broker_api_key": "aaa",
       "description": null
     }
   },
@@ -50,6 +54,7 @@
       "external_id": 2,
       "broker_type": "onesignal",
       "broker_app_id": "aaa",
+      "broker_api_key": "aaa",
       "description": "Namespace test 2"
     }
   }

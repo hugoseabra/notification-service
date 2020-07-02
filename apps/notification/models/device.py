@@ -19,6 +19,7 @@ class Device(mixins.UUIDPkMixin,
     subscriber = models.ForeignKey(
         to='notification.Subscriber',
         on_delete=models.CASCADE,
+        related_name='devices',
         null=False,
         blank=False,
     )
