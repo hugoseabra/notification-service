@@ -41,10 +41,70 @@ def create_transmissions(notification: Notification):
             'device_id': str(device.pk),
         }
 
+        if Transmission.objects.filter(**filters).exists() is False:
+            transmission = Transmission(
+                device_id=str(device.pk),
+                notification_id=str(notification.pk),
+            )
+            transmission.validate()
+            transmission.save()
 
-def send_notification(transmission: Transmission):
+
+def send_notifications(namespace: Namespace):
     """
-    Processes transmission by sending notification to Push Notification
-    broker.
+    Processes transmissions by sending notification to Push Notification broker.
     """
-    pass
+    url = 'clientize://'
+
+    broker_notification = value_objects.Notification(
+        url=url,
+        app_id=namespace.broker_app_id,
+    )
+
+    transmissions = Transmission.objects.filter(
+        notification__subscriber__namespace_id=namespace.pk,
+        processed_at__isnull=True
+    )
+
+    broker = get_broker(
+        broker_alias=namespace.broker_type,
+        api_key=namespace.broker_api_key,
+        app_id=namespace.broker_app_id
+    )
+
+    notifications = list()
+
+    device_broker_ids = list()
+
+    for transmission in transmissions:
+        subscriber = transmission.notification.subscriber
+        device_broker_ids += [
+            d.broker_id
+            for d in subscriber.devices.filter(active=True)
+            if d.broker_id
+        ]
+        notifications.append(transmission.notification)
+
+    for id in device_broker_ids:
+        broker_notification.add_player_id(player_id=id)
+
+    response = broker.create_and_send_notification(
+        data=dict(broker_notification)
+    )
+
+    if response.status_code != 200:
+        raise Exception(
+            f'Error when synchronizing notifications'
+            f' - Status: {response.status_code}: {response.text}'
+        )
+
+    data = response.json()
+
+    for notification in notifications:
+        id = data.get('id')
+        if notification.broker_id is not None:
+            continue
+        if id:
+            notification.broker_id = id
+            notification.validate()
+            notification.save()
