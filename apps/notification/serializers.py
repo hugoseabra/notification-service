@@ -130,10 +130,44 @@ class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
         fields = (
             'pk',
             'name',
+            'broker_id',
+            'device_type',
+            'model',
+            'unique_id',
+            'brand',
+            'os_build_number',
+            'os_version',
+            'os_bundle_id',
+            'os_readable_version',
+            'android_fringerprint',
+            'android_install_time',
+            'android_bootloader',
+            'ios_device_token',
+            'subscriber',
             'active',
             'created_at',
             'updated_at',
         )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.subscribe_pk = None
+
+    def get_form(self, data=None, files=None, **kwargs):
+        if data:
+            data.update({'subscribe': self.subscribe_pk})
+        return super().get_form(data, files, **kwargs)
+
+    def to_representation(self, instance: forms.DeviceForm.Meta.model):
+        rep = super().to_representation(instance)
+
+        if self.is_requested_field('subscriber'):
+            subscriber_serializer = SubscriberSerializer(
+                instance=instance.subscriber
+            )
+            rep['subscriber'] = subscriber_serializer.data
+
+        return rep
 
 
 class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
@@ -147,6 +181,11 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'title',
             'text',
             'active',
+            'language',
+            'title',
+            'url',
+            'subscriber',
+            'extra_data',
             'broker_id',
             'created_at',
             'updated_at',
@@ -154,11 +193,11 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.subscriber_pk = None
+        self.subscribe_pk = None
 
     def get_form(self, data=None, files=None, **kwargs):
         if data:
-            data.update({'subscriber': self.subscriber_pk})
+            data.update({'subscribe': self.subscribe_pk})
         return super().get_form(data, files, **kwargs)
 
     def to_representation(self, instance: forms.NotificationForm.Meta.model):

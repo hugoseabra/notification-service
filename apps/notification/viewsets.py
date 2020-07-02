@@ -128,6 +128,29 @@ class DeviceViewSet(FieldRequestViewsetMixin, ModelViewSet):
         permissions.IsAuthenticated,
     )
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        subscriber_pk = get_validated_uuid_from_string(
+            request.GET.get('subscriber')
+        )
+        if not subscriber_pk:
+            content = {'detail': [
+                _('Subscriber not provided or not valid.'),
+            ]}
+            return Response(data=content,
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = queryset.filter(subscriber_id=subscriber_pk)
+
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+
+        if page is not None:
+            return self.get_paginated_response(serializer.data)
+
+        return Response(serializer.data)
+
 
 class NotificationViewSet(ModelViewSet):
     serializer_class = serializers.NotificationSerializer
@@ -142,45 +165,6 @@ class NotificationViewSet(ModelViewSet):
     permission_classes = (
         permissions.IsAuthenticated,
     )
-
-    def get_serializer(self, *args, **kwargs):
-        serializer = super().get_serializer(*args, **kwargs)
-
-        if isinstance(serializer, ListSerializer) is False:
-            subscriber_pk = get_validated_uuid_from_string(
-                self.kwargs.get('subscriber_pk')
-            )
-            serializer.subscriber_pk = subscriber_pk
-
-        return serializer
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-
-        subscriber_pk = get_validated_uuid_from_string(
-            self.kwargs.get('subscriber_pk')
-        )
-
-        if subscriber_pk:
-            queryset = queryset.filter(subscriber_id=subscriber_pk)
-        else:
-            queryset = queryset.none()
-
-        return queryset
-
-    def create(self, request, *args, **kwargs):
-        subscriber_pk = get_validated_uuid_from_string(
-            self.kwargs.get('project_pk')
-        )
-        data = request.data.copy()
-        data.update({'subscriber': subscriber_pk})
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(data)
-        return Response(serializer.data,
-                        status=status.HTTP_201_CREATED,
-                        headers=headers)
 
 
 class BaseTransmissionViewSet(ReadOnlyModelViewSet):
