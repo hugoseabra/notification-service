@@ -1,3 +1,4 @@
+import uuid
 from django.test import TestCase
 
 from apps.notification.forms import SubscriberForm
@@ -12,6 +13,7 @@ class SubscriberFormTest(TestCase):
         self.namespace = utils.create_namespace(save=True,
                                                 ignore_validation=True)
         self.data = {
+            'user_id': uuid.uuid4(),
             'name': 'Luke Skywalker',
             'user': '0c1c921b-374a-4ede-954e-a5f835a15e9b',
             'namespace': str(self.namespace.pk)

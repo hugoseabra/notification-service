@@ -5,8 +5,7 @@ from core.models import mixins
 
 
 # Model Subscriber.
-class Subscriber(mixins.UUIDPkMixin,
-                 mixins.ActivableMixin,
+class Subscriber(mixins.ActivableMixin,
                  mixins.DateTimeManagementMixin,
                  mixins.EntityMixin,
                  mixins.DomainRuleMixin,
@@ -17,15 +16,17 @@ class Subscriber(mixins.UUIDPkMixin,
         verbose_name = _('Subscriber')
         verbose_name_plural = _('Subscribers')
 
-    name = models.CharField(
-        verbose_name=_('name'),
+    user_id = models.UUIDField(
+        verbose_name=_('user_id'),
         max_length=255,
+        unique=True,
+        primary_key=True,
         null=False,
         blank=False,
     )
 
-    user = models.CharField(
-        verbose_name=_('user'),
+    name = models.CharField(
+        verbose_name=_('name'),
         max_length=255,
         null=False,
         blank=False,

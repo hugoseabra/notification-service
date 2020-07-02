@@ -12,7 +12,7 @@
       "type": "marketing_notification",
       "broker_id": "",
       "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
-      "subscriber": "31e5da0a-85dd-4e04-8033-1333cfd0aa8d",
+      "subscriber": "1255389e-e639-42e8-b9b0-d3cf99451c8f",
       "extra_data": null
     }
   },
@@ -29,7 +29,7 @@
       "type": "marketing_engagement",
       "broker_id": "",
       "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
-      "subscriber": "ba958913-eb21-41cb-a9c0-f4a17c651013",
+      "subscriber": "986459dd-7eaf-40e3-8476-c7542ebc4bae",
       "extra_data": null
     }
   },
@@ -46,7 +46,7 @@
       "type": "product_engagement",
       "broker_id": "",
       "text": "Ainda d\u00e1 para voc\u00ea aproveitar os pre\u00e7os baixos da semana.",
-      "subscriber": "31e5da0a-85dd-4e04-8033-1333cfd0aa8d",
+      "subscriber": "1255389e-e639-42e8-b9b0-d3cf99451c8f",
       "extra_data": "{\n    \"product_id\": \"f179c2c7-5cf7-4053-9776-27f902694196\"\n}"
     }
   },
@@ -63,7 +63,7 @@
       "type": "product_engagement",
       "broker_id": "",
       "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
-      "subscriber": "ba958913-eb21-41cb-a9c0-f4a17c651013",
+      "subscriber": "986459dd-7eaf-40e3-8476-c7542ebc4bae",
       "extra_data": null
     }
   }

@@ -62,10 +62,9 @@ class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):
         form = forms.SubscriberForm
         model = forms.SubscriberForm.Meta.model
         fields = (
-            'pk',
+            'user_id',
             'name',
             'active',
-            'user',
             'namespace',
             'created_at',
             'updated_at',
@@ -144,6 +143,8 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
         fields = (
             'pk',
             'type',
+            'language',
+            'title',
             'text',
             'active',
             'broker_id',
