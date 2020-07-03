@@ -12,6 +12,8 @@ class Notification:
 
         self.__include_player_ids = list()
 
+        self.django_notification_id = None
+
         self.errors = dict()
         self._check_errors()
 

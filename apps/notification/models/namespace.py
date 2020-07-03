@@ -62,10 +62,11 @@ class Namespace(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    last_notification_process = models.DateTimeField(
-        verbose_name=_('last notification process'),
+    last_process = models.DateTimeField(
+        verbose_name=_('last process'),
         null=True,
         blank=True,
+        help_text=_('last time notifications were processed.')
     )
 
     def __str__(self):

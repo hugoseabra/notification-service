@@ -8,7 +8,6 @@ from core.models import mixins
 
 # Model Notification.
 class Notification(mixins.UUIDPkMixin,
-                   mixins.ActivableMixin,
                    mixins.DateTimeManagementMixin,
                    mixins.EntityMixin,
                    mixins.DomainRuleMixin,

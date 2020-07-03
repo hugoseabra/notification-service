@@ -1,12 +1,19 @@
 import importlib
 from typing import List
 
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
+from django.db.transaction import atomic
+from django.utils import timezone
 
-from apps.notification.models import Notification, Transmission, Namespace
+from apps.notification.models import (
+    Device,
+    Namespace,
+    Notification,
+    Transmission,
+    Subscriber,
+)
 from brokers import Broker, value_objects
 from .constants import BROTKER_TYPES
-from .forms import TransmissionForm
 
 
 def get_broker(broker_alias, **kwargs) -> Broker:
@@ -55,6 +62,13 @@ def create_transmissions(notification: Notification) -> List[Transmission]:
             transmission.validate()
             transmission.save()
 
+            yield transmission
+
+
+def process_namespaces_notifications():
+    for n in Namespace.objects.filter(active=True):
+        send_notifications(namespace=n)
+
 
 def send_notifications(namespace: Namespace):
     """
@@ -62,73 +76,102 @@ def send_notifications(namespace: Namespace):
     """
     url = 'clientize://'
 
+    msg = f'Processing namespace: {namespace}'
+    print('=' * len(msg))
+    print(msg)
+    print('=' * len(msg))
+
     broker = get_broker(
         broker_alias=namespace.broker_type,
         api_key=namespace.broker_api_key,
         app_id=namespace.broker_app_id
     )
 
+    notifi_qs = namespace.notifications.filter(
+        Q(broker_id='')|Q(broker_id__isnull=True)
+    )
+
+    print(f'= Broker: {namespace.broker_type}')
+    print(f'= # Notifications: {notifi_qs.count()}')
+
+    if namespace.last_process is not None:
+        print(f'= Last process: {timezone.localtime(namespace.last_process)}')
+        notifi_qs = notifi_qs.filter(created_at__gte=namespace.last_process)
+
     broker_notifications = list()
 
-    for sub in namespace.subscribers.filter(active=True):
-        notifications = dict()
+    for notif in notifi_qs:
+        print()
+        print(f' > Notification: {notif.title} ({notif.pk})')
 
-        for notif in sub.notifications.filter(broker_id__isnull=True):
-            broker_notification = value_objects.Notification(
-                url=url,
-                app_id=namespace.broker_app_id,
-            )
-            print(broker_notification)
+        broker_notification = value_objects.Notification(
+            url=url,
+            app_id=namespace.broker_app_id,
+        )
+        broker_notification.django_notification_id = str(notif.pk)
 
-            transmissions = notif.transmissions.filter(
-                processed_at__isnull=True
-            )
-            notifications[str(notif.pk)] = notif
+        broker_notification.add_heading(
+            language=notif.language,
+            plain_text=notif.title,
+        )
 
-            device_broker_ids = list()
+        broker_notification.add_content(
+            language=notif.language,
+            plain_text=notif.text,
+        )
 
-            for transmission in transmissions:
-                subscriber = transmission.notification.subscriber
-                notification = transmission.notification
+        subscriber_qs = Subscriber.objects.filter(
+            active=True,
+            devices__broker_id__isnull=False,
+            devices__active=True,
+        )
 
-                device_broker_ids += [
-                    d.broker_id
-                    for d in subscriber.devices.filter(active=True)
-                    if d.broker_id
-                ]
+        group_qs = notif.groups.filter(active=True)
 
-                broker_notification.add_heading(
-                    language=notification.language,
-                    plain_text=notification.title,
+        print(f'   - Groups: {group_qs.count()}')
+
+        if group_qs.count():
+            groups_pk = [str(g.pk) for g in group_qs]
+            subscriber_qs = subscriber_qs.filter(groups__pk__in=groups_pk)
+
+        print(f'   - Subscribers: {subscriber_qs.count()}')
+        subscriber_pks = [str(s.pk) for s in subscriber_qs]
+
+        device_qs = Device.objects.filter(
+            broker_id__isnull=False,
+            active=True,
+            subscriber_id__in=subscriber_pks,
+        )
+
+        print(f'   - devices: {device_qs.count()}')
+
+        for d in device_qs:
+            broker_notification.add_player_id(player_id=d.broker_id)
+
+        broker_notifications.append(broker_notification)
+
+    with atomic():
+        for broker_notif in broker_notifications:
+            response = broker.create_and_send_notification(
+                data=dict(broker_notif))
+
+            if response.status_code != 200:
+                raise Exception(
+                    f'Error when synchronizing notifications'
+                    f' - Status: {response.status_code}: {response.text}'
                 )
-                broker_notification.add_content(
-                    language=notification.language,
-                    plain_text=notification.text,
-                )
 
-            for broker_id in device_broker_ids:
-                broker_notification.add_player_id(player_id=broker_id)
+            data = response.json()
 
-            broker_notifications.append(broker_notification)
+            notif = Notification.objects.get(
+                pk=broker_notif.django_notification_id
+            )
+            notif.broker_id = data.get('id')
+            notif.validate()
+            notif.save()
 
-    print(broker_notifications)
+            namespace.last_process = timezone.now()
+            namespace.validate()
+            namespace.save()
 
-    # for broker_notif in broker_notifications:
-    #     response = broker.create_and_send_notification(data=dict(broker_notif))
-    #
-    #     if response.status_code != 200:
-    #         raise Exception(
-    #             f'Error when synchronizing notifications'
-    #             f' - Status: {response.status_code}: {response.text}'
-    #         )
-    #
-    #     data = response.json()
-    #
-    #     for _, notification in notifications.items():
-    #         id = data.get('id')
-    #         if notification.broker_id is not None:
-    #             continue
-    #         if id:
-    #             notification.broker_id = id
-    #             notification.validate()
-    #             notification.save()
+    print()

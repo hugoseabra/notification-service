@@ -8,9 +8,11 @@
       "updated_at": "2020-06-25T16:12:43.134Z",
       "name": "Aplica\u00e7\u00e3o cliente 1",
       "external_id": 1,
+      "description": "Test namespace",
+      "broker_type": "onesignal",
       "broker_app_id": "aaa",
       "broker_api_key": "aaa",
-      "description": "Test namespace"
+      "last_process": null
     }
   },
   {
@@ -22,10 +24,11 @@
       "updated_at": "2020-06-25T19:57:39.181Z",
       "name": "Namespace 2",
       "external_id": 2,
+      "description": "Namespace test 2",
       "broker_type": "onesignal",
       "broker_app_id": "aaa",
       "broker_api_key": "aaa",
-      "description": "Namespace test 2"
+      "last_process": null
     }
   }
 ]
