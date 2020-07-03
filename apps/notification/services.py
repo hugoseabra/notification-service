@@ -1,10 +1,12 @@
 import importlib
+from typing import List
 
 from django.db.models import QuerySet
 
 from apps.notification.models import Notification, Transmission, Namespace
 from brokers import Broker, value_objects
 from .constants import BROTKER_TYPES
+from .forms import TransmissionForm
 
 
 def get_broker(broker_alias, **kwargs) -> Broker:
@@ -31,7 +33,7 @@ def process_notifications(queryset: QuerySet = None):
         create_transmissions(notification)
 
 
-def create_transmissions(notification: Notification):
+def create_transmissions(notification: Notification) -> List[Transmission]:
     """
     Creates transmissions for every Subscriber's active device.
     """
@@ -60,55 +62,73 @@ def send_notifications(namespace: Namespace):
     """
     url = 'clientize://'
 
-    broker_notification = value_objects.Notification(
-        url=url,
-        app_id=namespace.broker_app_id,
-    )
-
-    transmissions = Transmission.objects.filter(
-        notification__subscriber__namespace_id=namespace.pk,
-        processed_at__isnull=True
-    )
-
     broker = get_broker(
         broker_alias=namespace.broker_type,
         api_key=namespace.broker_api_key,
         app_id=namespace.broker_app_id
     )
 
-    notifications = list()
+    broker_notifications = list()
 
-    device_broker_ids = list()
+    for sub in namespace.subscribers.filter(active=True):
+        notifications = dict()
 
-    for transmission in transmissions:
-        subscriber = transmission.notification.subscriber
-        device_broker_ids += [
-            d.broker_id
-            for d in subscriber.devices.filter(active=True)
-            if d.broker_id
-        ]
-        notifications.append(transmission.notification)
+        for notif in sub.notifications.filter(broker_id__isnull=True):
+            broker_notification = value_objects.Notification(
+                url=url,
+                app_id=namespace.broker_app_id,
+            )
+            print(broker_notification)
 
-    for id in device_broker_ids:
-        broker_notification.add_player_id(player_id=id)
+            transmissions = notif.transmissions.filter(
+                processed_at__isnull=True
+            )
+            notifications[str(notif.pk)] = notif
 
-    response = broker.create_and_send_notification(
-        data=dict(broker_notification)
-    )
+            device_broker_ids = list()
 
-    if response.status_code != 200:
-        raise Exception(
-            f'Error when synchronizing notifications'
-            f' - Status: {response.status_code}: {response.text}'
-        )
+            for transmission in transmissions:
+                subscriber = transmission.notification.subscriber
+                notification = transmission.notification
 
-    data = response.json()
+                device_broker_ids += [
+                    d.broker_id
+                    for d in subscriber.devices.filter(active=True)
+                    if d.broker_id
+                ]
 
-    for notification in notifications:
-        id = data.get('id')
-        if notification.broker_id is not None:
-            continue
-        if id:
-            notification.broker_id = id
-            notification.validate()
-            notification.save()
+                broker_notification.add_heading(
+                    language=notification.language,
+                    plain_text=notification.title,
+                )
+                broker_notification.add_content(
+                    language=notification.language,
+                    plain_text=notification.text,
+                )
+
+            for broker_id in device_broker_ids:
+                broker_notification.add_player_id(player_id=broker_id)
+
+            broker_notifications.append(broker_notification)
+
+    print(broker_notifications)
+
+    # for broker_notif in broker_notifications:
+    #     response = broker.create_and_send_notification(data=dict(broker_notif))
+    #
+    #     if response.status_code != 200:
+    #         raise Exception(
+    #             f'Error when synchronizing notifications'
+    #             f' - Status: {response.status_code}: {response.text}'
+    #         )
+    #
+    #     data = response.json()
+    #
+    #     for _, notification in notifications.items():
+    #         id = data.get('id')
+    #         if notification.broker_id is not None:
+    #             continue
+    #         if id:
+    #             notification.broker_id = id
+    #             notification.validate()
+    #             notification.save()

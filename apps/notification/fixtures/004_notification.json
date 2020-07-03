@@ -6,11 +6,11 @@
       "active": true,
       "created_at": "2020-06-25T16:35:41.307Z",
       "updated_at": "2020-07-01T18:29:12.698Z",
-      "language": "pt",
+      "language": "en",
       "title": "Imperd\u00edvel",
       "url": "https://www.gravatar.com/avatar/48942131478c36610a71509144980e1f",
       "type": "marketing_notification",
-      "broker_id": "",
+      "broker_id": null,
       "text": "O produto ainda est\u00e1 dispon\u00edvel. Aproveite!",
       "namespace": "735cc98b-7a30-4563-90fa-6dc6101e373a",
       "extra_data": null
@@ -27,7 +27,7 @@
       "title": "Fritadeira Wallita",
       "url": "https://www.gravatar.com/avatar/48942131478c36610a71509144980e1f",
       "type": "product_engagement",
-      "broker_id": "",
+      "broker_id": null,
       "text": "Ainda d\u00e1 para voc\u00ea aproveitar os pre\u00e7os baixos da semana.",
       "namespace": "735cc98b-7a30-4563-90fa-6dc6101e373a",
       "extra_data": "{\n    \"product_id\": \"f179c2c7-5cf7-4053-9776-27f902694196\"\n}"
