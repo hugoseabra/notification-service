@@ -47,12 +47,10 @@ class SubscriberSerializer(FormSerializerMixin, serializers.ModelSerializer):
         return super().to_internal_value(data)
 
     def get_form(self, data=None, files=None, **kwargs):
-        form = super().get_form(data, files, **kwargs)
+        if data and self.groups:
+            data['groups'] = self.groups
 
-        for group in self.groups:
-            form.add_group(group)
-
-        return form
+        return super().get_form(data, files, **kwargs)
 
     def to_representation(self, instance: forms.GroupForm.Meta.model):
         rep = super().to_representation(instance)
