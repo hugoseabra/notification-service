@@ -44,7 +44,6 @@ class SubscriberAdmin(admin.ModelAdmin):
         'active',
     )
     list_filter = ('active', 'created_at', 'updated_at', 'namespace')
-    raw_id_fields = ('groups',)
     search_fields = ('name', 'user_id')
     date_hierarchy = 'created_at'
     form = forms.SubscriberForm

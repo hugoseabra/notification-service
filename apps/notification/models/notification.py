@@ -70,6 +70,13 @@ class Notification(mixins.UUIDPkMixin,
         blank=False,
     )
 
+    groups = models.ManyToManyField(
+        to='notification.Group',
+        verbose_name=_('groups'),
+        related_name='notifications',
+        blank=True,
+    )
+
     extra_data = jsonfield.JSONField(
         blank=True,
         null=True
