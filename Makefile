@@ -44,6 +44,7 @@ save-fixtures:
 # Adiciona fixtures
 .PHONY: load-fixtures
 load-fixtures:
+	./manage.py loaddata 000_site_dev
 	./manage.py loaddata 000_admin
 	./manage.py loaddata 000_namespace
 	./manage.py loaddata 001_group
