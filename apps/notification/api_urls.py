@@ -18,7 +18,7 @@ namespace_router = routers.NestedSimpleRouter(
 namespace_router.register(
     prefix='groups',
     viewset=viewsets.GroupViewSet,
-    basename='namespace-groups'
+    basename='group'
 )
 
 # Subscriber.
@@ -30,7 +30,7 @@ subscriber_router = routers.NestedSimpleRouter(
 subscriber_router.register(
     prefix='transmissions',
     viewset=viewsets.SubscriberTransmissionViewSet,
-    basename='subscriber-transmissions'
+    basename='transmission'
 )
 
 # Device.
@@ -42,7 +42,7 @@ device_router = routers.NestedSimpleRouter(
 device_router.register(
     prefix='transmissions',
     viewset=viewsets.DeviceTransmissionViewSet,
-    basename='device-transmissions'
+    basename='device-transmission'
 )
 
 # Notification.
@@ -54,7 +54,7 @@ notification_router = routers.NestedSimpleRouter(
 notification_router.register(
     prefix='transmissions',
     viewset=viewsets.NotificationTransmissionViewSet,
-    basename='notification-transmissions'
+    basename='notification-transmission'
 )
 
 urlpatterns = router.urls
