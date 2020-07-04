@@ -21,7 +21,7 @@ class DeviceSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'os_version',
             'os_bundle_id',
             'os_readable_version',
-            'android_fringerprint',
+            'android_fingerprint',
             'android_install_time',
             'android_bootloader',
             'ios_device_token',

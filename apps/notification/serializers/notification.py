@@ -18,7 +18,6 @@ class NotificationSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'language',
             'title',
             'text',
-            'active',
             'language',
             'title',
             'url',

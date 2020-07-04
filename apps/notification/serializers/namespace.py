@@ -15,6 +15,7 @@ class NamespaceSerializer(FormSerializerMixin, serializers.ModelSerializer):
             'external_id',
             'broker_type',
             'broker_app_id',
+            'broker_api_key',
             'description',
             'created_at',
             'updated_at',
