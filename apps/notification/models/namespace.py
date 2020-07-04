@@ -24,7 +24,7 @@ class Namespace(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    external_id = models.IntegerField(
+    external_id = models.TextField(
         verbose_name=_('external id'),
         db_index=True,
         unique=True,

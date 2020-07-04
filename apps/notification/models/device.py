@@ -99,7 +99,7 @@ class Device(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    android_fringerprint = models.TextField(
+    android_fingerprint = models.TextField(
         verbose_name=_('android fingerprint'),
         null=True,
         blank=True,
