@@ -1,3 +1,5 @@
+import importlib
+
 import jsonfield
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -83,3 +85,7 @@ class Notification(mixins.UUIDPkMixin,
 
     def __str__(self):
         return f'{self.namespace} - {self.title}'
+
+    def process_transmissions(self):
+        services = importlib.import_module('apps.notification.services')
+        services.create_transmissions(notification=self)

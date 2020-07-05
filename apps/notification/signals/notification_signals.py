@@ -1,13 +1,7 @@
-from django.db.models.signals import post_save, m2m_changed
+from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 
-from apps.notification import services
 from apps.notification.models import Notification, Group
-
-
-@receiver(post_save, sender=Notification)
-def create_transmissions(instance, **_):
-    services.create_transmissions(notification=instance)
 
 
 @receiver(m2m_changed, sender=Notification.groups.through)

@@ -48,6 +48,7 @@ def create_transmissions(notification: Notification) -> List[Transmission]:
     for subscriber in notification.namespace.subscribers.filter(active=True):
         devices += [d for d in subscriber.devices.filter(active=True)]
 
+    transmissions = list()
     for device in devices:
         filters = {
             'notification_id': str(notification.pk),
@@ -61,8 +62,9 @@ def create_transmissions(notification: Notification) -> List[Transmission]:
             )
             transmission.validate()
             transmission.save()
+            transmissions.append(transmissions)
 
-            yield transmission
+    return transmissions
 
 
 def process_namespaces_notifications():
@@ -88,7 +90,7 @@ def send_notifications(namespace: Namespace):
     )
 
     notifi_qs = namespace.notifications.filter(
-        Q(broker_id='')|Q(broker_id__isnull=True)
+        Q(broker_id='') | Q(broker_id__isnull=True)
     )
 
     print(f'= Broker: {namespace.broker_type}')
