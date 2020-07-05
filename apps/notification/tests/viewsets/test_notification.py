@@ -99,6 +99,47 @@ class NotificationAPITest(TestCase):
 
         self.assertTrue(Notification.objects.filter(pk=data['pk']))
 
+    def test_creation_with_groups(self):
+        uri = self._get_uri(self._get_collection_endpoint())
+
+        self._login()
+
+        self.data.update({'namespace': {
+            'pk': str(self.namespace.pk)
+        }})
+
+        group1 = utils.create_group(save=False)
+        group1.namespace = self.namespace
+        group1.save(ignore_validation=True)
+
+        group2 = utils.create_group(save=True, ignore_validation=True)
+        group2.namespace = self.namespace
+        group2.save(ignore_validation=True)
+
+        self.data['groups'] = [
+            {
+                'pk': str(group1.pk),
+            },
+            {
+                'pk': str(group2.pk),
+            }
+        ]
+
+        result = self.client.post(
+            path=uri,
+            data=json.dumps(self.data),
+            content_type='application/json',
+        )
+        data = result.json()
+        self.assertEqual(result.status_code, 201)
+
+        instance = Notification.objects.get(pk=data['pk'])
+        self.assertTrue(instance.groups.count() == 2)
+
+        group_pks = [str(g.pk) for g in instance.groups.all()]
+        self.assertIn(str(group1.pk), group_pks)
+        self.assertIn(str(group2.pk), group_pks)
+
     def test_edit(self):
         instance = self._create_instance()
 
@@ -125,6 +166,72 @@ class NotificationAPITest(TestCase):
                 instance_value = None
 
             self.assertEqual(v, instance_value)
+
+    def test_edit_groups(self):
+        instance = self._create_instance()
+
+        group1 = utils.create_group(save=False)
+        group1.namespace = self.namespace
+        group1.save(ignore_validation=True)
+
+        group2 = utils.create_group(save=True, ignore_validation=True)
+        group2.namespace = self.namespace
+        group2.save(ignore_validation=True)
+
+        self.assertTrue(instance.groups.count() == 0)
+
+        data = {'groups': [
+            {'pk': str(group1.pk)},
+            {'pk': str(group2.pk)},
+        ]}
+
+        uri = self._get_uri(self._get_item_endpoint(pk=instance.pk))
+
+        self._login()
+
+        result = self.client.patch(
+            path=uri,
+            data=json.dumps(data),
+            content_type='application/json',
+        )
+        print(result.json())
+        self.assertEqual(result.status_code, 200)
+
+        instance = Notification.objects.get(pk=instance.pk)
+
+        self.assertTrue(instance.groups.count() == 2)
+
+        group_pks = [str(g.pk) for g in instance.groups.all()]
+        self.assertIn(str(group1.pk), group_pks)
+        self.assertIn(str(group2.pk), group_pks)
+
+        group3 = utils.create_group(save=True, ignore_validation=True)
+        group3.namespace = self.namespace
+        group3.save(ignore_validation=True)
+
+        data = {'groups': [
+            {'pk': str(group1.pk)},
+            {'pk': str(group3.pk)},
+        ]}
+
+        uri = self._get_uri(self._get_item_endpoint(pk=instance.pk))
+
+        self._login()
+
+        result = self.client.patch(
+            path=uri,
+            data=json.dumps(data),
+            content_type='application/json',
+        )
+        print(result.json())
+        self.assertEqual(result.status_code, 200)
+
+        instance = Notification.objects.get(pk=instance.pk)
+
+        group_pks = [str(g.pk) for g in instance.groups.all()]
+        self.assertIn(str(group1.pk), group_pks)
+        self.assertNotIn(str(group2.pk), group_pks)
+        self.assertIn(str(group3.pk), group_pks)
 
     def test_delete(self):
         instance = self._create_instance()

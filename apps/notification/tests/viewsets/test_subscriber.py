@@ -237,11 +237,12 @@ class SubscriberAPITest(TestCase):
         print(result.json())
         self.assertEqual(result.status_code, 200)
 
+        instance = Subscriber.objects.get(pk=instance.pk)
+
         group_pks = [str(g.pk) for g in instance.groups.all()]
         self.assertIn(str(group1.pk), group_pks)
         self.assertNotIn(str(group2.pk), group_pks)
         self.assertIn(str(group3.pk), group_pks)
-
 
     def test_delete(self):
         instance = self._create_instance()
