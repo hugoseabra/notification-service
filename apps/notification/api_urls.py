@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 router.register('namespaces', viewsets.NamespaceViewSet)
 router.register('subscribers', viewsets.SubscriberViewSet)
 router.register('devices', viewsets.DeviceViewSet)
+router.register('notifications', viewsets.NotificationViewSet)
 
 # Namespace.
 namespace_router = routers.NestedSimpleRouter(
@@ -17,7 +18,7 @@ namespace_router = routers.NestedSimpleRouter(
 namespace_router.register(
     prefix='groups',
     viewset=viewsets.GroupViewSet,
-    basename='namespace-groups'
+    basename='group'
 )
 
 # Subscriber.
@@ -26,23 +27,10 @@ subscriber_router = routers.NestedSimpleRouter(
     parent_prefix='subscribers',
     lookup='subscriber'
 )
-
-subscriber_router.register(
-    prefix='devices',
-    viewset=viewsets.DeviceViewSet,
-    basename='subscriber-devices'
-)
-
-subscriber_router.register(
-    prefix='notifications',
-    viewset=viewsets.NotificationViewSet,
-    basename='subscriber-notifications'
-)
-
 subscriber_router.register(
     prefix='transmissions',
     viewset=viewsets.SubscriberTransmissionViewSet,
-    basename='subscriber-transmissions'
+    basename='transmission'
 )
 
 # Device.
@@ -51,20 +39,26 @@ device_router = routers.NestedSimpleRouter(
     parent_prefix='devices',
     lookup='device'
 )
-
-device_router.register(
-    prefix='subscribers',
-    viewset=viewsets.SubscriberViewSet,
-    basename='device-subscribers'
-)
-
 device_router.register(
     prefix='transmissions',
     viewset=viewsets.DeviceTransmissionViewSet,
-    basename='device-transmissions'
+    basename='device-transmission'
+)
+
+# Notification.
+notification_router = routers.NestedSimpleRouter(
+    parent_router=router,
+    parent_prefix='notifications',
+    lookup='notification'
+)
+notification_router.register(
+    prefix='transmissions',
+    viewset=viewsets.NotificationTransmissionViewSet,
+    basename='notification-transmission'
 )
 
 urlpatterns = router.urls
 urlpatterns += namespace_router.urls
 urlpatterns += subscriber_router.urls
 urlpatterns += device_router.urls
+urlpatterns += notification_router.urls

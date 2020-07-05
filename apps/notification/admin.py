@@ -15,6 +15,12 @@ class NamespaceAdmin(admin.ModelAdmin):
         'external_id',
         'broker_type',
         'broker_app_id',
+        'last_process',
+    )
+    readonly_fields = (
+        'pk',
+        'created_at',
+        'updated_at',
     )
     list_filter = ('active', 'created_at', 'updated_at', 'broker_type')
     search_fields = ('name', 'external_id', 'broker_app_id')
@@ -31,6 +37,11 @@ class GroupAdmin(admin.ModelAdmin):
         'active',
     )
     list_filter = ('active', 'created_at', 'updated_at', 'namespace')
+    readonly_fields = (
+        'pk',
+        'created_at',
+        'updated_at',
+    )
     search_fields = ('name',)
     date_hierarchy = 'created_at'
     form = forms.GroupForm
@@ -43,8 +54,12 @@ class SubscriberAdmin(admin.ModelAdmin):
         'user_id',
         'active',
     )
+    readonly_fields = (
+        'pk',
+        'created_at',
+        'updated_at',
+    )
     list_filter = ('active', 'created_at', 'updated_at', 'namespace')
-    raw_id_fields = ('groups',)
     search_fields = ('name', 'user_id')
     date_hierarchy = 'created_at'
     form = forms.SubscriberForm
@@ -65,6 +80,11 @@ class DeviceAdmin(admin.ModelAdmin):
         'subscriber',
         'subscriber__namespace',
     )
+    readonly_fields = (
+        'pk',
+        'created_at',
+        'updated_at',
+    )
     search_fields = ('name',)
     date_hierarchy = 'created_at'
     form = forms.DeviceForm
@@ -75,10 +95,15 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = (
         'title',
         'type',
-        'subscriber',
-        'active',
+        'namespace',
+        'created_at',
     )
-    list_filter = ('active', 'created_at', 'updated_at', 'subscriber')
+    readonly_fields = (
+        'pk',
+        'created_at',
+        'updated_at',
+    )
+    list_filter = ('created_at', 'updated_at', 'namespace')
     date_hierarchy = 'created_at'
     form = forms.NotificationForm
     formfield_overrides = {
@@ -93,6 +118,11 @@ class TransmissionAdmin(admin.ModelAdmin):
         'notification',
         'status',
         'processed_at',
+    )
+    readonly_fields = (
+        'pk',
+        'created_at',
+        'updated_at',
     )
     list_filter = (
         'created_at',

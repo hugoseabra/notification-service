@@ -1,9 +1,11 @@
 import onesignal as onesignal_sdk
 
+from ..broker import Broker
 
-class Client(onesignal_sdk.Client):
-    def __init__(self, app_auth_key=None, app_id=None, **kwargs):
-        super().__init__(app_auth_key=app_auth_key, app_id=app_id, **kwargs)
+
+class Client(Broker, onesignal_sdk.Client):
+    def __init__(self, api_key=None, app_id=None, **kwargs):
+        super().__init__(app_auth_key=api_key, app_id=app_id, **kwargs)
 
     @staticmethod
     def create_notification(data: dict):

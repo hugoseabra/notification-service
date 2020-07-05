@@ -1,4 +1,4 @@
-from ..languages import LANGUAGES
+from brokers.onesignal.languages import LANGUAGES
 
 
 class Notification:
@@ -11,6 +11,8 @@ class Notification:
         self.__headings = dict()
 
         self.__include_player_ids = list()
+
+        self.django_notification_id = None
 
         self.errors = dict()
         self._check_errors()

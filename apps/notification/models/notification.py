@@ -1,3 +1,5 @@
+import importlib
+
 import jsonfield
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -8,7 +10,6 @@ from core.models import mixins
 
 # Model Notification.
 class Notification(mixins.UUIDPkMixin,
-                   mixins.ActivableMixin,
                    mixins.DateTimeManagementMixin,
                    mixins.EntityMixin,
                    mixins.DomainRuleMixin,
@@ -17,6 +18,14 @@ class Notification(mixins.UUIDPkMixin,
     class Meta:
         verbose_name = _('Notification')
         verbose_name_plural = _('Notifications')
+
+    namespace = models.ForeignKey(
+        to='notification.Namespace',
+        on_delete=models.CASCADE,
+        related_name='notifications',
+        null=False,
+        blank=False,
+    )
 
     language = models.CharField(
         verbose_name=_('language'),
@@ -62,12 +71,11 @@ class Notification(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    subscriber = models.ForeignKey(
-        to='notification.Subscriber',
-        on_delete=models.CASCADE,
+    groups = models.ManyToManyField(
+        to='notification.Group',
+        verbose_name=_('groups'),
         related_name='notifications',
-        null=False,
-        blank=False,
+        blank=True,
     )
 
     extra_data = jsonfield.JSONField(
@@ -76,4 +84,8 @@ class Notification(mixins.UUIDPkMixin,
     )
 
     def __str__(self):
-        return f'{self.subscriber} - {self.title}'
+        return f'{self.namespace} - {self.title}'
+
+    def process_transmissions(self):
+        services = importlib.import_module('apps.notification.services')
+        services.create_transmissions(notification=self)

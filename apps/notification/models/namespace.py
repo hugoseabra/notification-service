@@ -24,7 +24,7 @@ class Namespace(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    external_id = models.IntegerField(
+    external_id = models.TextField(
         verbose_name=_('external id'),
         db_index=True,
         unique=True,
@@ -53,6 +53,20 @@ class Namespace(mixins.UUIDPkMixin,
         db_index=True,
         null=False,
         blank=False,
+    )
+
+    broker_api_key = models.TextField(
+        verbose_name=_('API KEY'),
+        db_index=True,
+        null=False,
+        blank=False,
+    )
+
+    last_process = models.DateTimeField(
+        verbose_name=_('last process'),
+        null=True,
+        blank=True,
+        help_text=_('last time notifications were processed.')
     )
 
     def __str__(self):

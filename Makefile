@@ -8,6 +8,7 @@ CELERY_LOG_FILE=/tmp/broker.log
 init: export_settings
 	@echo "Initiliazing application's data and state"
 	@make update-db
+	@make start-services
 	@make load-fixtures
 	@echo "\nAddress: http://localhost:8000/admin"
 	@echo "Credentials:\n  - user: admin\n  - pass: 123"
@@ -38,19 +39,18 @@ save-fixtures:
 	./manage.py dumpdata notification.subscriber > apps/notification/fixtures/002_subscriber.json
 	./manage.py dumpdata notification.device > apps/notification/fixtures/003_device.json
 	./manage.py dumpdata notification.notification > apps/notification/fixtures/004_notification.json
-	./manage.py dumpdata notification.transmission > apps/notification/fixtures/005_transmission.json
 
 
 # Adiciona fixtures
 .PHONY: load-fixtures
 load-fixtures:
+	./manage.py loaddata 000_site_dev
 	./manage.py loaddata 000_admin
 	./manage.py loaddata 000_namespace
 	./manage.py loaddata 001_group
 	./manage.py loaddata 002_subscriber
 	./manage.py loaddata 003_device
 	./manage.py loaddata 004_notification
-	./manage.py loaddata 005_transmission
 
 
 .PHONY: broker_create

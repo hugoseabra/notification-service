@@ -1,1 +1,50 @@
-[{"model": "notification.group", "pk": "271cbb21-c8ae-4c70-aa9e-f822b87dce4f", "fields": {"active": true, "created_at": "2020-06-25T16:14:30.827Z", "updated_at": "2020-06-25T16:14:30.828Z", "name": "Clientes", "alias": "customers", "namespace": "735cc98b-7a30-4563-90fa-6dc6101e373a"}}, {"model": "notification.group", "pk": "7166d3d6-ffd1-4576-a7f9-def984b67645", "fields": {"active": true, "created_at": "2020-06-25T19:58:05.217Z", "updated_at": "2020-06-25T19:58:05.217Z", "name": "Clientes ativos", "alias": "active-customers", "namespace": "e9a0a5aa-09f8-4074-9aca-63e4e0c95f25"}}, {"model": "notification.group", "pk": "7adc84ae-012e-4f7d-9082-914abd09eb5c", "fields": {"active": true, "created_at": "2020-06-25T19:58:22.360Z", "updated_at": "2020-06-25T19:58:22.360Z", "name": "Clientes inadimplentes", "alias": "customer-with-debts", "namespace": "e9a0a5aa-09f8-4074-9aca-63e4e0c95f25"}}, {"model": "notification.group", "pk": "a127f50d-ea7b-4ce4-94e0-29581e039405", "fields": {"active": true, "created_at": "2020-06-25T16:14:21.988Z", "updated_at": "2020-06-25T16:14:21.989Z", "name": "Vendedor", "alias": "seller", "namespace": "735cc98b-7a30-4563-90fa-6dc6101e373a"}}]
+[
+  {
+    "model": "notification.group",
+    "pk": "271cbb21-c8ae-4c70-aa9e-f822b87dce4f",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T16:14:30.827Z",
+      "updated_at": "2020-06-25T16:14:30.828Z",
+      "name": "Clientes",
+      "alias": "customers",
+      "namespace": "735cc98b-7a30-4563-90fa-6dc6101e373a"
+    }
+  },
+  {
+    "model": "notification.group",
+    "pk": "7166d3d6-ffd1-4576-a7f9-def984b67645",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T19:58:05.217Z",
+      "updated_at": "2020-06-25T19:58:05.217Z",
+      "name": "Clientes ativos",
+      "alias": "active-customers",
+      "namespace": "e9a0a5aa-09f8-4074-9aca-63e4e0c95f25"
+    }
+  },
+  {
+    "model": "notification.group",
+    "pk": "7adc84ae-012e-4f7d-9082-914abd09eb5c",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T19:58:22.360Z",
+      "updated_at": "2020-06-25T19:58:22.360Z",
+      "name": "Clientes inadimplentes",
+      "alias": "customer-with-debts",
+      "namespace": "e9a0a5aa-09f8-4074-9aca-63e4e0c95f25"
+    }
+  },
+  {
+    "model": "notification.group",
+    "pk": "a127f50d-ea7b-4ce4-94e0-29581e039405",
+    "fields": {
+      "active": true,
+      "created_at": "2020-06-25T16:14:21.988Z",
+      "updated_at": "2020-06-25T16:14:21.989Z",
+      "name": "Vendedor",
+      "alias": "seller",
+      "namespace": "735cc98b-7a30-4563-90fa-6dc6101e373a"
+    }
+  }
+]

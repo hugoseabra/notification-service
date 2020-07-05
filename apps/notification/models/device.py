@@ -19,6 +19,7 @@ class Device(mixins.UUIDPkMixin,
     subscriber = models.ForeignKey(
         to='notification.Subscriber',
         on_delete=models.CASCADE,
+        related_name='devices',
         null=False,
         blank=False,
     )
@@ -98,7 +99,7 @@ class Device(mixins.UUIDPkMixin,
         blank=False,
     )
 
-    android_fringerprint = models.TextField(
+    android_fingerprint = models.TextField(
         verbose_name=_('android fingerprint'),
         null=True,
         blank=True,

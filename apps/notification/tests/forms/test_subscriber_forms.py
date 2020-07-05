@@ -34,14 +34,13 @@ class SubscriberFormTest(TestCase):
         """
         Tests add groups to a subscriber with different namespace.
         """
-        form = self.create_form(data=self.data)
-
         # Groups with different namespace from Subscriber in Form
         group = utils.create_group(save=True, ignore_validation=True)
         group2 = utils.create_group(save=True, ignore_validation=True)
 
-        form.add_group(group)
-        form.add_group(group2)
+        self.data['groups'] = [group, group2]
+
+        form = self.create_form(data=self.data)
 
         self.assertFalse(form.is_valid())
 
@@ -49,15 +48,15 @@ class SubscriberFormTest(TestCase):
         """
         Tests add groups to a subscriber with different namespace.
         """
-        subscriber = utils.create_subscriber(save=True, ignore_validation=True)
-        form = self.create_form(data=self.data, instance=subscriber)
-
         # Groups with different namespace from Subscriber in Form
         group = utils.create_group(save=True, ignore_validation=True)
         group2 = utils.create_group(save=True, ignore_validation=True)
 
-        form.add_group(group)
-        form.add_group(group2)
+        subscriber = utils.create_subscriber(save=True, ignore_validation=True)
+
+        self.data['groups'] = [group, group2]
+
+        form = self.create_form(data=self.data, instance=subscriber)
 
         self.assertFalse(form.is_valid())
 
@@ -74,10 +73,9 @@ class SubscriberFormTest(TestCase):
         group2.namespace = self.namespace
         group2.save(ignore_validation=True)
 
-        form = self.create_form(data=self.data)
+        self.data['groups'] = [group, group2]
 
-        form.add_group(group)
-        form.add_group(group2)
+        form = self.create_form(data=self.data)
 
         self.assertTrue(form.is_valid())
         form.save()
@@ -104,10 +102,9 @@ class SubscriberFormTest(TestCase):
 
         self.assertEqual(subscriber.groups.count(), 0)
 
-        form = self.create_form(data=self.data, instance=subscriber)
+        self.data['groups'] = [group, group2]
 
-        form.add_group(group)
-        form.add_group(group2)
+        form = self.create_form(data=self.data, instance=subscriber)
 
         self.assertTrue(form.is_valid())
         form.save()

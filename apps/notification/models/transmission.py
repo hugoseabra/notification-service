@@ -3,8 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from apps.notification import constants
 from core.models import mixins
-
 from .rules import transmission_rules as rules
+
 
 # Model Notification.
 class Transmission(mixins.UUIDPkMixin,
@@ -13,13 +13,12 @@ class Transmission(mixins.UUIDPkMixin,
                    mixins.DomainRuleMixin,
                    mixins.DeletableModelMixin,
                    models.Model):
-
     integrity_rules = (
-        rules.DeviceAndNotificationSameSubscriberRule,
+        rules.DeviceAndNotificationSameNamespaceRule,
     )
 
     class Meta:
-        verbose_name = _('Tranmission')
+        verbose_name = _('Transmission')
         verbose_name_plural = _('Transmissions')
 
     device = models.ForeignKey(
@@ -44,7 +43,7 @@ class Transmission(mixins.UUIDPkMixin,
         default=constants.TRANSMISSION_STATUS_WAITING,
         max_length=10,
         null=False,
-        blank=False,
+        blank=True,
     )
 
     processed_at = models.DateTimeField(
